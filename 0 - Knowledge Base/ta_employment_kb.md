@@ -2,7 +2,7 @@
 **College of Arts, Media, and Technology (CAMT), Chiang Mai University**
 
 > **Maintained by:** Claude (Cowork Mode)
-> **Last updated:** 2026-05-07 (added Steps 1–3 detail)
+> **Last updated:** 2026-05-25 (added Step 4 — Graduate Assistant appointment process)
 > **Purpose:** Single source of truth for all policies, procedures, conditions, and requirements related to the TA employment process.
 
 ---
@@ -372,7 +372,32 @@ Each instructor can take one of three actions on each application:
 ---
 
 ## Step 4 — TA Appointment (แต่งตั้งผู้ช่วยสอน)
-*(No content yet — add selection criteria, approval workflow, and appointment documentation.)*
+
+The appointment process differs by TA type group.
+
+---
+
+### Graduate Assistant (Thai & International Program)
+
+Graduate Assistants are employed through a **จ้างเหมา (contract/outsourcing)** process. The required documents for this process are:
+
+1. **TOR (Terms of Reference)** — scope of work document prepared for the position
+2. **ใบเสนอราคา** — Quotation document
+3. **เอกสารที่ใช้สมัคร** — Application documents submitted by the applicant during Step 3 (see [Required Documents for Application](#required-documents-for-application))
+
+---
+
+### Master Student Assistant (International Program)
+
+Master Student Assistants are appointed through a **separate process** distinct from the Graduate Assistant จ้างเหมา flow. *(Process details to be added.)*
+
+> **Note:** This separation is due to a new university rule effective from a recent past semester. Previously, Master Student Assistants were employed under the same Graduate Assistant flow. See [Special Case: Master Student Assistant](#special-case-master-student-assistant-international-program) for background.
+
+---
+
+### Bachelor Student Assistant, Lab Head, CAMT Staff
+
+*(Appointment process details to be added.)*
 
 ---
 
