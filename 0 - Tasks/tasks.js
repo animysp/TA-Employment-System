@@ -107,10 +107,10 @@ const TASKS = [
     title: "ทำ Flow การทำงานโดยมีข้อมูลวันที่ตามปฏิทินการศึกษา กิจกรรม ระยะเวลา และเอกสารที่เกี่ยวข้อง",
     category: "System Maintenance",
     status: "todo",
-    type: "task",
-    due_date: "2026-05-26",
-    time: "",
-    location: "",
+    type: "meeting",
+    due_date: "2026-05-28",
+    time: "10:00 AM",
+    location: "Room 315",
     description: "Create a workflow diagram with academic calendar dates, activities, duration, and related documents (document numbers or links)."
   },
   {
@@ -135,15 +135,4 @@ const TASKS = [
     location: "",
     description: "Reformat the expense reimbursement document to landscape (horizontal) orientation."
   },
-  {
-    id: 12,
-    title: "Meeting to create workflow",
-    category: "System Maintenance",
-    status: "todo",
-    type: "meeting",
-    due_date: "2026-05-28",
-    time: "10:00 AM",
-    location: "Room 315",
-    description: "Meeting scheduled to work on creating the TA employment workflow (related to task #9)."
-  }
 ];
