@@ -2,7 +2,7 @@
 **College of Arts, Media, and Technology (CAMT), Chiang Mai University**
 
 > **Maintained by:** Claude (Cowork Mode)
-> **Last updated:** 2026-05-25 (added Step 4 — Graduate Assistant appointment process)
+> **Last updated:** 2026-05-28 (added TA allocation criteria, Active Learning definitions, and detailed special case documents from แนวทางปฏิบัติ TA)
 > **Purpose:** Single source of truth for all policies, procedures, conditions, and requirements related to the TA employment process.
 
 ---
@@ -47,6 +47,17 @@ The TA employment process runs on a **per-semester cycle**. One academic year co
 - The year component uses the **Thai Buddhist Era (B.E.)** year (e.g., `69` = B.E. 2569).
 - Staff refer to semesters using the shorthand pattern **`b.e. year-semester`** (e.g., `69-1`, `69-2`, `69-summer`).
 - Each semester triggers a new iteration of the full TA employment process loop.
+
+### Key Definitions
+
+| Term | Definition |
+|------|-----------|
+| **ผู้ช่วยสอน (Teaching Assistant / TA)** | A student or individual assigned to assist the instructor in managing and delivering instruction |
+| **วิชาปฏิบัติการ (Lab)** | A course focused on practical work, experiments, or skill training |
+| **วิชาบรรยาย (Lecture)** | A course focused on theoretical content and direct instruction |
+| **Active Learning** | An instructional approach emphasizing active student participation and engagement |
+
+---
 
 ### Process Overview (5 Main Steps)
 The employment process follows five sequential steps each semester:
@@ -196,6 +207,7 @@ Confirm which courses actually need a TA and how many positions are required, ba
 ### System: EMS (Education Management System)
 All data entry and instructor interaction for this step is done through the CAMT Education Management System.
 - **URL:** `ems-admin.camt.cmu.ac.th`
+- **Alternate entry URL:** `https://academic.camt.cmu.ac.th/login` (redirects to EMS)
 - **Recommended:** Use on a desktop/laptop. If on mobile, enable "Request desktop site."
 
 ### Process
@@ -272,9 +284,97 @@ The TA type dropdown in EMS does **not** include "Master Student Assistant (Inte
 
 > ⚠️ When a position in EMS shows "Graduate Assistant (International Program)," it may represent either a Graduate Assistant or a Master Student Assistant in practice. The actual appointment process for Master Student Assistants follows a different path (see Step 4).
 
+### TA Allocation Criteria (หลักเกณฑ์การจัดสรร)
+
+The number of TAs allocated per section depends on the **class type** and **enrollment count** (from the CMU Registrar's website). Criteria differ for Lab and Lecture classes.
+
+#### Lab Classes (วิชาปฏิบัติการ)
+
+Allocation is based solely on the number of registered students:
+
+| Enrolled Students | TAs Allocated |
+|:-----------------:|:-------------:|
+| ≤ 19 | ไม่จัดสรร (no TA) |
+| 20 – 39 | 1 |
+| 40 – 49 | 2 |
+| ≥ 50 | 3 (maximum) |
+
+#### Lecture Classes (วิชาบรรยาย)
+
+Lecture classes must pass **both** of the following steps to receive a TA:
+
+**Step 1 — Teaching Format Qualification**
+
+The course must meet **at least one** of the following:
+- Has a history of receiving an **Active Learning grant** (or higher-level grant) from **TLIC CMU**; **or**
+- Uses an **Active Learning** instructional format, with supporting documentation:
+  - A clear teaching/learning approach (แนวทางการเรียนการสอน)
+  - A clear assessment approach (แนวทางการวัดและประเมินผล)
+
+**Step 2 — Enrollment-Based Allocation**
+
+| Enrolled Students | TAs Allocated |
+|:-----------------:|:-------------:|
+| ≤ 50 | สูงสุด 1 คน (max 1) |
+| > 50 | สูงสุด 2 คน (max 2) |
+
+> *Exception:* สำนักวิชา may approve more than the standard quota on a case-by-case basis when there are special circumstances affecting teaching effectiveness.
+
+---
+
+### Standard TA Request Process (การขอใช้ตามเกณฑ์ปกติ)
+
+For sections that fall within the standard criteria above, instructors follow these steps:
+
+1. Check the enrolled student count from the CMU Registrar website.
+2. Fill in the TA request form in EMS: `ems-admin.camt.cmu.ac.th` (or via `https://academic.camt.cmu.ac.th/login`).
+
+---
+
+### Special Cases — Prior Approval Required Before Requesting TA
+
+In certain situations, an instructor must obtain **approval from สำนักวิชา** before the TA request can proceed. These cases require a written justification memo (บันทึกข้อความ).
+
+#### Conditions Requiring Prior Approval
+
+| # | Condition | Details |
+|---|-----------|---------|
+| 1 | The class is a **Lecture** type | Must meet the Active Learning criteria above (Step 1) — attach teaching plan or grant evidence |
+| 2 | The request **exceeds the standard quota** | Must justify the necessity with supporting documents |
+
+#### Supporting Documents by Case
+
+**For Lecture classes using Active Learning:**
+- Teaching plan showing Active Learning activities (แผนการสอนที่แสดงกิจกรรม Active Learning)
+- Assessment approach document (เอกสารแสดงวิธีการวัดและประเมินผล)
+- Active Learning grant evidence (if applicable)
+
+**For over-quota requests:**
+- Justification memo (บันทึกข้อความชี้แจงเหตุผลความจำเป็น)
+- Clear TA utilization plan (แผนการใช้ผู้ช่วยสอนที่ชัดเจน)
+- Past teaching evaluation results (if available)
+
+#### Approval Process (Instructor's Steps)
+
+1. **Prepare a memo** — Write a separate บันทึกข้อความ for each course being requested, and sign it.
+   - Download the memo template directly: **https://cmu.to/request-ta-template**
+   - Alternatively, access via Google Form (which also contains the template download link): **https://cmu.to/ta-request**
+
+2. **Get Program Chair's signature** — Submit the memo to the Program Chair (ประธานหลักสูตร) for co-signature, via Academic Service Staff (เจ้าหน้าที่สาขา).
+
+3. **Submit the signed file** — Send the signed memo via the Google Form:
+   - **https://forms.gle/WXim1i5Tr46oKJxC6**
+
+4. **Await result** — TA Admin Staff will forward the request to สำนักวิชา for consideration and will notify the instructor of the outcome.
+
+---
+
 ### Responsible Parties
-- **TA Admin Staff** — inputs initial data from the budget plan into EMS; opens system for instructors
-- **Instructor** — selects TA type for each position; may add missing sections
+- **TA Admin Staff** — inputs initial data from the budget plan into EMS; opens system for instructors; processes special-case approval requests and forwards to สำนักวิชา
+- **Instructor** — checks enrollment, selects TA type in EMS; may add missing sections; prepares and submits approval memo for special cases
+- **Academic Service Staff (เจ้าหน้าที่สาขา)** — facilitates submission of the memo to Program Chair
+- **Program Chair (ประธานหลักสูตร)** — reviews and co-signs the special-case memo
+- **สำนักวิชา** — grants or denies approval for special-case TA requests
 
 ---
 
