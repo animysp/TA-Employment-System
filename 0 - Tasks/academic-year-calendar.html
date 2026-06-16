@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Academic Year Calendar</title>
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #F5F4F0;
+    --card: #ffffff;
+    --border: #D3D1C7;
+    --text: #1a1a18;
+    --muted: #888780;
+    --primary: #705BE6;
+    --primary-light: #E7E3FB;
+    --success: #0E7C70;
+    --success-light: #D2F1EC;
+    --warning: #C2671B;
+    --warning-light: #FBE6D2;
+    --danger: #EB5757;
+    --danger-light: #FCEDED;
+    --info: #16B8A6;
+    --info-light: #D2F1EC;
+    --neutral: #B4B2A9;
+    --neutral-light: #F1EFE8;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "Sukhumvit Set", "IBM Plex Sans Thai", "Noto Sans Thai", "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+  header { margin-bottom: 24px; }
+  h1 {
+    font-size: 22px;
+    margin: 0 0 4px;
+    color: var(--text);
+  }
+  .subtitle { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  .toolbar-group { display: flex; gap: 6px; align-items: center; }
+  .toolbar-label { color: var(--muted); font-size: 12px; font-weight: 500; }
+  .btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 13px;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .btn:hover { background: var(--neutral-light); }
+  .btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+  .btn-reset {
+    margin-left: auto;
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .btn-reset:hover { color: var(--danger); border-color: var(--danger); background: var(--danger-light); }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .stat-label { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  .stat-value { font-size: 22px; font-weight: 600; }
+  .stat-value.danger { color: var(--danger); }
+  .stat-value.warning { color: var(--warning); }
+  .stat-value.success { color: var(--success); }
+  .stat-value.primary { color: var(--primary); }
+
+  .progress-bar {
+    margin-top: 8px;
+    height: 6px;
+    background: var(--neutral-light);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--success);
+    transition: width 0.3s;
+  }
+
+  .step-group {
+    margin-bottom: 24px;
+  }
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 10px 14px;
+    background: var(--info-light);
+    border-radius: 8px;
+    border-left: 4px solid var(--info);
+  }
+  .step-number {
+    font-size: 12px;
+    background: var(--info);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+  .step-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .step-meta {
+    margin-left: auto;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .subgroup-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 12px 4px 8px;
+    padding-left: 8px;
+    border-left: 3px solid var(--neutral);
+  }
+
+  .activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .activity {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    align-items: start;
+    transition: all 0.15s;
+  }
+  .activity:hover { box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .activity.completed {
+    background: var(--success-light);
+    border-color: var(--success);
+  }
+  .activity.completed .activity-name { text-decoration: line-through; color: var(--muted); }
+  .activity.overdue { border-left: 4px solid var(--danger); }
+  .activity.current { border-left: 4px solid var(--warning); }
+  .activity.upcoming { border-left: 4px solid var(--primary); }
+  .activity.future { border-left: 4px solid var(--neutral); }
+
+  .activity-check {
+    width: 20px; height: 20px;
+    cursor: pointer;
+    accent-color: var(--success);
+    margin-top: 2px;
+  }
+  .activity-body { min-width: 0; }
+  .activity-name {
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .activity-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .activity-meta-item { display: flex; gap: 4px; align-items: center; }
+  .activity-date {
+    font-weight: 500;
+    color: var(--text);
+  }
+  .activity-docs {
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .doc-tag {
+    background: var(--neutral-light);
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+  }
+
+  .badge {
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .badge-overdue { background: var(--danger-light); color: var(--danger); }
+  .badge-current { background: var(--warning-light); color: var(--warning); }
+  .badge-upcoming { background: var(--primary-light); color: var(--primary); }
+  .badge-future { background: var(--neutral-light); color: var(--muted); }
+  .badge-completed { background: var(--success-light); color: var(--success); }
+
+  .activity-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    min-width: 90px;
+    text-align: right;
+  }
+  .activity-days {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    background: var(--card);
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+  }
+
+  .legend {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .legend-item { display: flex; align-items: center; gap: 4px; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 2px; }
+
+  .today-note {
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  details {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 16px;
+  }
+  details summary {
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  details[open] summary { margin-bottom: 8px; }
+  .sem-table { width: 100%; font-size: 12px; border-collapse: collapse; }
+  .sem-table th, .sem-table td { padding: 4px 8px; text-align: left; border-bottom: 1px solid var(--border); }
+  .sem-table th { color: var(--muted); font-weight: 500; }
+</style>
+<style>
+  .controls { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+  .filter-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; }
+  .control-box { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 10px 14px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; }
+  .box-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-right: 2px; }
+  .btn-group { display: flex; flex-wrap: wrap; gap: 6px; }
+  .year-select { font-size: 14px; font-weight: 600; padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px; background: #fff; color: var(--text); font-family: inherit; cursor: pointer; }
+  .btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .btn-primary:hover { background: #5B47C9; }
+  .conn-note { font-size: 12px; color: var(--muted); margin-left: 6px; }
+  .conn-note.off { color: var(--danger); }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(26,26,24,0.45); display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 100; }
+  .modal { background: #fff; border-radius: 16px; padding: 22px 24px; width: 100%; max-width: 460px; max-height: 90vh; overflow-y: auto; }
+  .modal h3 { font-size: 17px; font-weight: 600; margin-bottom: 16px; }
+  .modal label { display: block; font-size: 12px; color: var(--muted); font-weight: 500; margin-bottom: 10px; }
+  .modal input { width: 100%; margin-top: 4px; padding: 8px 10px; font-size: 13px; font-family: inherit; border: 1px solid var(--border); border-radius: 8px; color: var(--text); }
+  .modal input:focus { outline: none; border-color: var(--primary); }
+  .modal-row { display: flex; gap: 10px; }
+  .modal-row label { flex: 1; }
+  .cal-sem { border-top: 1px solid var(--border); padding-top: 10px; margin-top: 6px; }
+  .cal-sem > b { font-size: 13px; color: var(--text); }
+  .modal-actions { display: flex; gap: 8px; align-items: center; margin-top: 16px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <p style="margin-bottom:1rem;"><a href="../index.html" style="font-size:13px;color:var(--primary);text-decoration:none;">← หน้าหลัก / Home</a></p>
+  <header>
+    <h1 id="pageTitle">Academic Year Calendar</h1>
+    <div class="subtitle">วิทยาลัยศิลปะ สื่อ และเทคโนโลยี มหาวิทยาลัยเชียงใหม่ · ติดตามกิจกรรมตาม STEP 1–5</div>
+  </header>
+
+  <div class="today-note" id="todayNote"></div>
+
+  <details>
+    <summary id="semSummary">ดูปฏิทินภาคการศึกษา</summary>
+    <table class="sem-table">
+      <thead>
+        <tr><th>ภาค</th><th>เปิดภาค</th><th>วันสุดท้ายของการศึกษา</th></tr>
+      </thead>
+      <tbody id="semTableBody"></tbody>
+    </table>
+  </details>
+
+  <div class="controls">
+    <div class="control-box">
+      <span class="box-label">ปีการศึกษา</span>
+      <select id="yearSelect" class="year-select"></select>
+      <button class="btn" id="manageYearBtn">⚙ จัดการ / เพิ่มปฏิทินปี</button>
+      <span class="conn-note" id="connNote"></span>
+    </div>
+    <div class="filter-row">
+      <div class="control-box">
+        <span class="box-label">ภาคการศึกษา</span>
+        <div class="btn-group" id="semFilters"></div>
+      </div>
+      <div class="control-box">
+        <span class="box-label">สถานะ</span>
+        <div class="btn-group">
+          <button class="btn active" data-filter-status="all">ทั้งหมด</button>
+          <button class="btn" data-filter-status="active">ยังไม่เสร็จ</button>
+          <button class="btn" data-filter-status="overdue">เลยกำหนด</button>
+          <button class="btn" data-filter-status="current">ถึงกำหนด</button>
+          <button class="btn" data-filter-status="completed">เสร็จแล้ว</button>
+        </div>
+      </div>
+      <button class="btn btn-reset" id="resetBtn">รีเซ็ตสถานะปีนี้</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="calModal" style="display:none">
+    <div class="modal">
+      <h3 id="calModalTitle">เพิ่ม / แก้ไขปฏิทินปีการศึกษา</h3>
+      <label>ปีการศึกษา (พ.ศ.)
+        <input type="number" id="cy-year" placeholder="เช่น 2570">
+      </label>
+      <div class="cal-sem"><b>ภาคเรียนที่ 1</b>
+        <div class="modal-row">
+          <label>เปิดภาค<input type="date" id="cy-s1-open"></label>
+          <label>วันสุดท้ายของการศึกษา<input type="date" id="cy-s1-last"></label>
+        </div>
+      </div>
+      <div class="cal-sem"><b>ภาคเรียนที่ 2</b>
+        <div class="modal-row">
+          <label>เปิดภาค<input type="date" id="cy-s2-open"></label>
+          <label>วันสุดท้ายของการศึกษา<input type="date" id="cy-s2-last"></label>
+        </div>
+      </div>
+      <div class="cal-sem"><b>ภาคฤดูร้อน (3)</b>
+        <div class="modal-row">
+          <label>เปิดภาค<input type="date" id="cy-s3-open"></label>
+          <label>วันสุดท้ายของการศึกษา<input type="date" id="cy-s3-last"></label>
+        </div>
+      </div>
+      <div class="cal-sem"><b>การวางแผนงบประมาณ</b>
+        <div class="modal-row">
+          <label>วันวางแผนงบ<input type="date" id="cy-bud-date"></label>
+          <label>ปีงบประมาณ (พ.ศ.)<input type="number" id="cy-bud-fy" placeholder="เช่น 2571"></label>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <span style="flex:1"></span>
+        <button class="btn" onclick="closeCalModal()">ยกเลิก</button>
+        <button class="btn btn-primary" onclick="saveCalModal()">บันทึก</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="legend">
+    <span class="legend-item"><span class="legend-dot" style="background:var(--danger)"></span>เลยกำหนด</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--warning)"></span>ถึงกำหนด / ภายในสัปดาห์นี้</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--primary)"></span>ใกล้ถึง (ภายใน 30 วัน)</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--neutral)"></span>ยังไม่ถึงกำหนด</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--success)"></span>เสร็จแล้ว</span>
+  </div>
+
+  <div id="content" style="margin-top: 16px;"></div>
+</div>
+
+<script>
+  // ============================================================
+  //  CONFIG — ใช้ Apps Script Web App ตัวเดียวกับ Task Board
+  //  (ต้อง Deploy Code.gs เวอร์ชันใหม่ที่มี Activities + Calendars)
+  const API_URL = 'https://script.google.com/macros/s/AKfycbxSv9noJfPYlZSrzgPX3y9gsOZBxlkZUuB3cizevdmB-h50u7jjfSuPiqPAPCBNF5Al/exec';
+  const AUTO_REFRESH_MS = 15000;
+  // ============================================================
+
+  // ปฏิทินตั้งต้น (ปีการศึกษา 2569) — ใช้เมื่อ backend ยังไม่มีข้อมูล
+  const YEAR_DEFAULTS = {
+    2569: {
+      sems: {
+        '1': { open: '2026-06-22', lastDay: '2026-10-18' },
+        '2': { open: '2026-11-16', lastDay: '2027-03-14' },
+        '3': { open: '2027-04-19', lastDay: '2027-05-30' }
+      },
+      budget: { date: '2026-09-09', fy: 2570 }
+    }
+  };
+
+  // ============ HELPERS ============
+  function parseDate(s) { return new Date(s + 'T00:00:00'); }
+  function addDays(date, days) { const d = new Date(date); d.setDate(d.getDate() + days); return d; }
+  function addMonths(date, months) { const d = new Date(date); d.setMonth(d.getMonth() + months); return d; }
+  const TH_DS = ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'];
+  const TH_MS = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+  const TH_DL = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+  const TH_ML = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+  function fmtDate(d) { if (!d) return ''; return `${TH_DS[d.getDay()]} ${d.getDate()} ${TH_MS[d.getMonth()]} ${(d.getFullYear()+543)%100}`; }
+  function fmtDateLong(d) { if (!d) return ''; return `${TH_DL[d.getDay()]}ที่ ${d.getDate()} ${TH_ML[d.getMonth()]} ${d.getFullYear()+543}`; }
+  function daysBetween(a, b) { const ms = a.setHours(0,0,0,0) - b.setHours(0,0,0,0); return Math.round(ms / (1000*60*60*24)); }
+  function lastBusinessDayOfMonth(year, month) { const d = new Date(year, month+1, 0); while (d.getDay()===0||d.getDay()===6) d.setDate(d.getDate()-1); return d; }
+
+  // ============ ACTIVITY BUILDER (year-aware) ============
+  function buildActivities(be) {
+    const cfg = calendars[be];
+    const acts = [];
+    if (!cfg) return acts;
+    const yy = ((be % 100) + 100) % 100;
+
+    // STEP 1 - วางแผนงบประมาณ (รายปีงบประมาณ)
+    if (cfg.budget && cfg.budget.date) {
+      acts.push({
+        id: `step1-budget-${cfg.budget.fy}`,
+        step: 1, sem: 'annual', subgroup: null,
+        name: `วางแผนงบประมาณประจำปีงบประมาณ ${cfg.budget.fy}`,
+        timelineText: '3 สัปดาห์ก่อนสิ้นเดือนกันยายน',
+        date: parseDate(cfg.budget.date),
+        docs: ['ข้อมูลจาก EMS', 'ตารางข้อมูลการเบิกย้อนหลัง', 'ตารางการวางแผนงบประมาณ'],
+      });
+    }
+
+    ['1','2','3'].forEach(n => {
+      const sd = cfg.sems && cfg.sems[n];
+      if (!sd || !sd.open || !sd.lastDay) return;
+      const sem = `${n}/${yy}`;
+      const open = parseDate(sd.open);
+      const lastDay = parseDate(sd.lastDay);
+
+      // STEP 2 - สอบถามยอดผู้ช่วยสอน
+      acts.push({ id: `${sem}-step2-ems-prep`, step: 2, sem, subgroup: null, name: 'เตรียมข้อมูลในระบบ EMS เพื่อให้อาจารย์มาแจ้งขอ', timelineText: '3 เดือนก่อนเปิดเทอม', date: addMonths(open, -3), docs: ['ตารางสอนจากหลักสูตร'] });
+      acts.push({ id: `${sem}-step2-ems-announce`, step: 2, sem, subgroup: null, name: 'ประกาศแจ้งอาจารย์เข้า EMS เพื่อแจ้งขอ TA', timelineText: '2 เดือนก่อนเปิดเทอม', date: addMonths(open, -2), docs: ['ภาพประกาศ'] });
+      acts.push({ id: `${sem}-step2-special`, step: 2, sem, subgroup: null, name: 'เสนอบันทึกข้อความชี้แจงเหตุผลกรณีพิเศษ', timelineText: '2 เดือนก่อนเปิดเทอม ถึง 2 สัปดาห์ก่อนเปิดเทอม', date: addMonths(open, -2), dateEnd: addDays(open, -14), isRange: true, docs: ['Google Form', 'Template'] });
+
+      // STEP 3 - รับสมัครผู้ช่วยสอน
+      acts.push({ id: `${sem}-step3-recruit-announce`, step: 3, sem, subgroup: null, name: 'ประกาศรับสมัครผู้ช่วยสอน', timelineText: 'ไม่น้อยกว่า 1 เดือนก่อนเปิดเทอม', date: addMonths(open, -1), docs: ['ภาพประกาศ'] });
+      acts.push({ id: `${sem}-step3-scholarship`, step: 3, sem, subgroup: null, name: 'ประกาศทุน TA/RA', timelineText: 'ไม่น้อยกว่า 1 เดือนก่อนเปิดเทอม', date: addMonths(open, -1), docs: ['ประกาศทุน', 'ใบเสนองาน'] });
+      acts.push({ id: `${sem}-step3-accept-prof`, step: 3, sem, subgroup: null, name: 'ประกาศแจ้งอาจารย์ให้กดตอบรับผู้ช่วยสอน', timelineText: '2 สัปดาห์หลังจากการประกาศรับสมัคร', date: addDays(addMonths(open, -1), 14), docs: ['ภาพประกาศ'] });
+      acts.push({ id: `${sem}-step3-close1`, step: 3, sem, subgroup: null, name: 'ปิดรับสมัครรอบแรก', timelineText: '2 สัปดาห์ก่อนเปิดเทอม', date: addDays(open, -14), docs: [] });
+      acts.push({ id: `${sem}-step3-announce1`, step: 3, sem, subgroup: null, name: 'ประกาศรายชื่อผู้ผ่านการคัดเลือก รอบแรก', timelineText: 'หลังปิดรับสมัคร 1 วัน', date: addDays(open, -13), docs: [] });
+      acts.push({ id: `${sem}-step3-close2`, step: 3, sem, subgroup: null, name: 'ปิดรับสมัครรอบที่สอง (ถ้ามี)', timelineText: 'ไม่เกิน 2 สัปดาห์หลังเปิดเทอม', date: addDays(open, 14), optional: true, docs: [] });
+      acts.push({ id: `${sem}-step3-announce2`, step: 3, sem, subgroup: null, name: 'ประกาศรายชื่อผู้ผ่านการคัดเลือก รอบที่สอง (ถ้ามี)', timelineText: 'หลังปิดรับสมัคร 1 วัน', date: addDays(open, 15), optional: true, docs: [] });
+
+      // STEP 4 - แต่งตั้งผู้ช่วยสอน
+      acts.push({ id: `${sem}-step4-tor`, step: 4, sem, subgroup: 'กลุ่มจ้างเหมา', name: 'ทำ TOR ลงระบบ', timelineText: 'หลังจากอาจารย์กดตอบรับผู้ช่วยสอน', date: addDays(open, -13), docs: ['ร่างข้อมูล TOR'] });
+      acts.push({ id: `${sem}-step4-sign-quote`, step: 4, sem, subgroup: 'กลุ่มจ้างเหมา', name: 'ติดต่อผู้ช่วยสอนมาเซ็นใบเสนอราคา ส่งสำเนาบัตรประชาชน และจ่ายค่าอากรแสตมป์', timelineText: 'หลังจากประกาศรายชื่อผู้ผ่านการคัดเลือก', date: addDays(open, -12), docs: ['ใบเสนอราคา', 'อากรแสตมป์'] });
+      acts.push({ id: `${sem}-step4-send-procurement`, step: 4, sem, subgroup: 'กลุ่มจ้างเหมา', name: 'ส่ง TOR พร้อมใบเสนอราคา และเอกสารแนบให้พัสดุ', timelineText: 'หลังจากผู้ช่วยสอนเซ็นเอกสารแล้ว', date: addDays(open, -7), docs: ['TOR ที่แปะอากรแสตมป์แล้ว', 'ใบเสนอราคา', 'สำเนาบัตรประชาชน', 'CV', 'สำเนาวุฒิการศึกษา', 'Transcript'] });
+      acts.push({ id: `${sem}-step4-grad-announce`, step: 4, sem, subgroup: 'กลุ่มนักศึกษาบัณฑิต', name: 'ทำประกาศรายชื่อนักศึกษาทุน', timelineText: '1 สัปดาห์ก่อนเปิดเทอม (อาจมีประกาศเพิ่มเติม)', date: addDays(open, -7), docs: ['ประกาศรายชื่อนักศึกษาทุน', 'ใบเสนองาน'] });
+      acts.push({ id: `${sem}-step4-ug-bank`, step: 4, sem, subgroup: 'กลุ่มนักศึกษา ป.ตรี', name: 'รวมข้อมูลนักศึกษาส่งพี่แบงค์', timelineText: 'ไม่เกิน 2 สัปดาห์หลังเปิดเทอม', date: addDays(open, 14), docs: [] });
+
+      // STEP 5 - เบิกจ่าย (รายเดือน)
+      const monthsList = [];
+      let m = new Date(open.getFullYear(), open.getMonth(), 1);
+      const endM = new Date(lastDay.getFullYear(), lastDay.getMonth(), 1);
+      while (m <= endM) { monthsList.push(new Date(m)); m = new Date(m.getFullYear(), m.getMonth() + 1, 1); }
+
+      monthsList.forEach((monthStart, idx) => {
+        const isLastMonth = idx === monthsList.length - 1;
+        const monthLabel = `${TH_MS[monthStart.getMonth()]} ${(monthStart.getFullYear()+543)%100}`;
+        const annDate = isLastMonth ? addDays(lastDay, -7) : addDays(new Date(monthStart.getFullYear(), monthStart.getMonth()+1, 0), -7);
+        const closeDate = isLastMonth ? new Date(lastDay) : lastBusinessDayOfMonth(monthStart.getFullYear(), monthStart.getMonth());
+
+        acts.push({ id: `${sem}-step5-cont-ann-${idx}`, step: 5, sem, subgroup: 'กลุ่มจ้างเหมา', name: `ประกาศให้ส่งเอกสารเบิก เดือน ${monthLabel}`, timelineText: isLastMonth ? '1 สัปดาห์ก่อนวันสุดท้ายของการเรียนการสอน' : '1 สัปดาห์ก่อนสิ้นเดือน', date: annDate, docs: isLastMonth ? ['ฟอร์มใบลงเวลา','สำเนาบัตรประชาชน','ใบวางบิล'] : ['ฟอร์มใบลงเวลา'] });
+        acts.push({ id: `${sem}-step5-cont-close-${idx}`, step: 5, sem, subgroup: 'กลุ่มจ้างเหมา', name: `ปิดรับเอกสารเบิก เดือน ${monthLabel}`, timelineText: isLastMonth ? 'วันสุดท้ายของการเรียนการสอน' : 'วันทำการสุดท้ายของเดือน', date: closeDate, docs: [] });
+        acts.push({ id: `${sem}-step5-stu-ann-${idx}`, step: 5, sem, subgroup: 'กลุ่มนักศึกษา (บัณฑิต+ป.ตรี)', name: `ประกาศให้ส่งเอกสารเบิก เดือน ${monthLabel}`, timelineText: isLastMonth ? '1 สัปดาห์ก่อนวันสุดท้ายของการเรียนการสอน' : '1 สัปดาห์ก่อนสิ้นเดือน', date: annDate, docs: ['ฟอร์มใบลงเวลา','สำเนาบัตรประชาชน'] });
+        acts.push({ id: `${sem}-step5-stu-close-${idx}`, step: 5, sem, subgroup: 'กลุ่มนักศึกษา (บัณฑิต+ป.ตรี)', name: `ปิดรับเอกสารเบิก เดือน ${monthLabel}`, timelineText: isLastMonth ? 'วันสุดท้ายของการเรียนการสอน' : 'วันทำการสุดท้ายของเดือน', date: closeDate, docs: [] });
+        acts.push({ id: `${sem}-step5-stu-send-${idx}`, step: 5, sem, subgroup: 'กลุ่มนักศึกษา (บัณฑิต+ป.ตรี)', name: `รวมเอกสารส่งให้ปูน เดือน ${monthLabel}`, timelineText: isLastMonth ? 'ไม่เกิน 1 สัปดาห์หลังวันสุดท้ายของการเรียนการสอน' : 'ไม่เกิน 1 สัปดาห์หลังเดือนส่งเบิก', date: addDays(closeDate, 7), docs: [] });
+      });
+
+      acts.push({ id: `${sem}-step5-cont-term`, step: 5, sem, subgroup: 'กลุ่มจ้างเหมา', name: 'รวมเอกสารส่งให้พัสดุ (รายเทอม)', timelineText: 'ไม่เกิน 2 สัปดาห์หลังจากวันสุดท้ายของการเรียนการสอน', date: addDays(lastDay, 14), docs: [] });
+    });
+
+    acts.sort((a, b) => { const da = a.date || new Date(8640000000000000); const db = b.date || new Date(8640000000000000); return da - db; });
+    return acts;
+  }
+
+  // ============ STATE ============
+  const YEAR_KEY = 'ta-tracker-year-v2';
+  const FILTER_KEY = 'ta-tracker-filter-v2';
+  const OFF_STATUS_KEY = 'ta-tracker-status-offline-v2';
+  const OFF_CAL_KEY = 'ta-tracker-calendars-offline-v2';
+
+  let calendars = {};
+  let currentYear = null;
+  let statusMap = {};
+  let activities = [];
+  let online = false;
+  let writing = false;
+  let filter = loadFilter();
+
+  function loadFilter() { try { return JSON.parse(localStorage.getItem(FILTER_KEY)) || { sem: 'all', status: 'all' }; } catch (e) { return { sem: 'all', status: 'all' }; } }
+  function saveFilter() { localStorage.setItem(FILTER_KEY, JSON.stringify(filter)); }
+  function loadOfflineStatus() { try { return JSON.parse(localStorage.getItem(OFF_STATUS_KEY)) || {}; } catch (e) { return {}; } }
+  function saveOfflineStatus() { localStorage.setItem(OFF_STATUS_KEY, JSON.stringify(statusMap)); }
+  function loadOfflineCalendars() { try { return JSON.parse(localStorage.getItem(OFF_CAL_KEY)) || {}; } catch (e) { return {}; } }
+  function saveOfflineCalendars() { localStorage.setItem(OFF_CAL_KEY, JSON.stringify(calendars)); }
+
+  // ============ API ============
+  async function apiGetTracker() {
+    const res = await fetch(API_URL + '?type=tracker', { method: 'GET' });
+    const data = await res.json();
+    if (!data.ok) throw new Error('bad');
+    return data;
+  }
+  async function apiPost(payload) {
+    const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'failed');
+    return data;
+  }
+  function applyCalendars(list) { (list || []).forEach(c => { if (c && c.year && c.config) calendars[c.year] = c.config; }); }
+  function applyActivityStatuses(list) { statusMap = {}; (list || []).forEach(a => { if (a.done) statusMap[a.id] = { done: true, done_at: a.done_at || '' }; }); }
+
+  async function loadAll() {
+    calendars = {};
+    Object.keys(YEAR_DEFAULTS).forEach(y => { calendars[Number(y)] = YEAR_DEFAULTS[y]; });
+    if (API_URL) {
+      try { const data = await apiGetTracker(); online = true; applyCalendars(data.calendars); applyActivityStatuses(data.activities); }
+      catch (e) { online = false; Object.assign(calendars, loadOfflineCalendars()); statusMap = loadOfflineStatus(); }
+    } else { Object.assign(calendars, loadOfflineCalendars()); statusMap = loadOfflineStatus(); }
+    const years = Object.keys(calendars).map(Number).sort((a, b) => a - b);
+    const saved = Number(localStorage.getItem(YEAR_KEY));
+    currentYear = (saved && calendars[saved]) ? saved : years[years.length - 1];
+    buildAndRender();
+  }
+
+  async function refreshStatuses() {
+    if (!API_URL || writing) return;
+    try {
+      const data = await apiGetTracker();
+      online = true;
+      applyCalendars(data.calendars);
+      applyActivityStatuses(data.activities);
+      if (!calendars[currentYear]) { const ys = Object.keys(calendars).map(Number).sort((a, b) => a - b); currentYear = ys[ys.length - 1]; }
+      buildAndRender();
+    } catch (e) { online = false; updateConn(); }
+  }
+
+  // ============ STATUS LOGIC ============
+  function getStatus(a, today) {
+    if (statusMap[a.id] && statusMap[a.id].done) return 'completed';
+    const end = a.dateEnd || a.date;
+    if (!end) return 'future';
+    const d = daysBetween(new Date(today), new Date(end));
+    if (d > 0) return 'overdue';
+    if (d >= -7) return 'current';
+    if (d >= -30) return 'upcoming';
+    return 'future';
+  }
+  function statusLabel(s) { return ({ overdue: 'เลยกำหนด', current: 'ถึงกำหนด', upcoming: 'ใกล้ถึง', future: 'ยังไม่ถึง', completed: 'เสร็จแล้ว' })[s] || ''; }
+
+  const STEP_TITLES = {
+    1: { title: 'วางงบประมาณ', meta: 'รายปีงบประมาณ' },
+    2: { title: 'สอบถามยอดผู้ช่วยสอน', meta: 'รายเทอม' },
+    3: { title: 'รับสมัครผู้ช่วยสอน', meta: 'รายเทอม' },
+    4: { title: 'แต่งตั้งผู้ช่วยสอน', meta: 'รายเทอม' },
+    5: { title: 'เบิกจ่าย', meta: 'รายเทอม + รายเดือน' },
+  };
+
+  // ============ RENDER ============
+  function setTodayNote() { document.getElementById('todayNote').innerHTML = `<span>วันนี้: <b>${fmtDateLong(new Date())}</b></span>`; }
+
+  function updateConn() {
+    const el = document.getElementById('connNote');
+    if (!el) return;
+    if (API_URL) { el.textContent = online ? '🟢 เชื่อมต่อ Google Sheets — บันทึกอัตโนมัติ' : '🔴 ออฟไลน์ — บันทึกในเครื่องนี้'; el.classList.toggle('off', !online); }
+    else { el.textContent = 'โหมดออฟไลน์'; el.classList.add('off'); }
+  }
+
+  function updateTitle() {
+    document.getElementById('pageTitle').textContent = `Academic Year Calendar — ปีการศึกษา ${currentYear}`;
+    document.getElementById('semSummary').textContent = `ดูปฏิทินภาคการศึกษา ${currentYear}`;
+  }
+
+  function renderSemTable() {
+    const cfg = calendars[currentYear]; const yy = ((currentYear % 100) + 100) % 100;
+    let html = '';
+    if (cfg) ['1','2','3'].forEach(n => {
+      const sd = cfg.sems && cfg.sems[n];
+      if (!sd) return;
+      html += `<tr><td><b>${n}/${yy}</b></td><td>${sd.open ? fmtDate(parseDate(sd.open)) : '—'}</td><td>${sd.lastDay ? fmtDate(parseDate(sd.lastDay)) : '—'}</td></tr>`;
+    });
+    document.getElementById('semTableBody').innerHTML = html || '<tr><td colspan="3">ยังไม่มีข้อมูลปฏิทิน</td></tr>';
+  }
+
+  function populateYearSelect() {
+    const sel = document.getElementById('yearSelect');
+    const years = Object.keys(calendars).map(Number).sort((a, b) => a - b);
+    sel.innerHTML = years.map(y => `<option value="${y}"${y === currentYear ? ' selected' : ''}>${y}</option>`).join('');
+  }
+
+  function populateSemFilters() {
+    const yy = ((currentYear % 100) + 100) % 100;
+    const cfg = calendars[currentYear];
+    const sems = ['1','2','3'].filter(n => cfg && cfg.sems && cfg.sems[n] && cfg.sems[n].open).map(n => `${n}/${yy}`);
+    if (filter.sem !== 'all' && filter.sem !== 'annual' && !sems.includes(filter.sem)) filter.sem = 'all';
+    const opts = [['all', 'ทั้งหมด'], ['annual', 'รายปี']].concat(sems.map(s => [s, s]));
+    const wrap = document.getElementById('semFilters');
+    wrap.innerHTML = opts.map(([v, l]) => `<button class="btn${filter.sem === v ? ' active' : ''}" data-filter-sem="${v}">${l}</button>`).join('');
+    wrap.querySelectorAll('[data-filter-sem]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        filter.sem = btn.dataset.filterSem; saveFilter();
+        wrap.querySelectorAll('.btn').forEach(b => b.classList.toggle('active', b.dataset.filterSem === filter.sem));
+        render();
+      });
+    });
+  }
+
+  function renderStats(filteredActs) {
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    let total = filteredActs.length, done = 0, overdue = 0, current = 0, upcoming = 0;
+    for (const a of filteredActs) {
+      const s = getStatus(a, today);
+      if (s === 'completed') done++; else if (s === 'overdue') overdue++; else if (s === 'current') current++; else if (s === 'upcoming') upcoming++;
+    }
+    const pct = total ? Math.round(done / total * 100) : 0;
+    document.getElementById('stats').innerHTML = `
+      <div class="stat-card"><div class="stat-label">รวมกิจกรรม</div><div class="stat-value">${total}</div></div>
+      <div class="stat-card"><div class="stat-label">เสร็จแล้ว</div><div class="stat-value success">${done}</div><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div><div style="font-size:11px;color:var(--muted);margin-top:4px">${pct}%</div></div>
+      <div class="stat-card"><div class="stat-label">เลยกำหนด</div><div class="stat-value danger">${overdue}</div></div>
+      <div class="stat-card"><div class="stat-label">ถึงกำหนด</div><div class="stat-value warning">${current}</div></div>
+      <div class="stat-card"><div class="stat-label">ใกล้ถึง (≤30 วัน)</div><div class="stat-value primary">${upcoming}</div></div>`;
+  }
+
+  function filterActivities() {
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    return activities.filter(a => {
+      if (filter.sem !== 'all' && a.sem !== filter.sem) return false;
+      const s = getStatus(a, today);
+      if (filter.status === 'active' && s === 'completed') return false;
+      if (filter.status === 'completed' && s !== 'completed') return false;
+      if (filter.status === 'overdue' && s !== 'overdue') return false;
+      if (filter.status === 'current' && s !== 'current') return false;
+      return true;
+    });
+  }
+
+  function activityCard(a) {
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const s = getStatus(a, today);
+    const isDone = s === 'completed';
+    const cls = `activity ${s}${isDone ? ' completed' : ''}`;
+    const dateStr = a.isRange ? `${fmtDate(a.date)} – ${fmtDate(a.dateEnd)}` : fmtDate(a.date);
+    let daysText = '';
+    const end = a.dateEnd || a.date;
+    if (end) {
+      const diff = daysBetween(new Date(today), new Date(end));
+      if (isDone) daysText = ''; else if (diff > 0) daysText = `เลยมาแล้ว ${diff} วัน`; else if (diff === 0) daysText = 'วันนี้'; else daysText = `อีก ${-diff} วัน`;
+    }
+    const docs = (a.docs || []).map(d => `<span class="doc-tag">${d}</span>`).join('');
+    const optionalTag = a.optional ? ' <span class="badge badge-future">(ถ้ามี)</span>' : '';
+    return `
+      <label class="${cls}">
+        <input type="checkbox" class="activity-check" data-id="${a.id}" ${isDone ? 'checked' : ''} />
+        <div class="activity-body">
+          <div class="activity-name">${a.name}${optionalTag}</div>
+          <div class="activity-meta">
+            <span class="activity-meta-item">📅 <span class="activity-date">${dateStr}</span></span>
+            <span class="activity-meta-item">⏱ ${a.timelineText}</span>
+            ${a.sem !== 'annual' ? `<span class="activity-meta-item">📚 ภาค ${a.sem}</span>` : '<span class="activity-meta-item">📚 รายปี</span>'}
+            ${a.subgroup ? `<span class="activity-meta-item">👥 ${a.subgroup}</span>` : ''}
+          </div>
+          ${docs ? `<div class="activity-docs">${docs}</div>` : ''}
+        </div>
+        <div class="activity-right">
+          <span class="badge badge-${s}">${statusLabel(s)}</span>
+          <span class="activity-days">${daysText}</span>
+        </div>
+      </label>`;
+  }
+
+  function render() {
+    const filtered = filterActivities();
+    renderStats(filtered);
+    const content = document.getElementById('content');
+    if (filtered.length === 0) { content.innerHTML = '<div class="empty-state">ไม่มีกิจกรรมที่ตรงกับตัวกรอง</div>'; return; }
+    const byStep = {};
+    for (const a of filtered) { if (!byStep[a.step]) byStep[a.step] = []; byStep[a.step].push(a); }
+    let html = '';
+    for (const step of [1, 2, 3, 4, 5]) {
+      if (!byStep[step]) continue;
+      const acts = byStep[step];
+      const info = STEP_TITLES[step];
+      html += `<div class="step-group"><div class="step-header"><span class="step-number">STEP ${step}</span><span class="step-title">${info.title}</span><span class="step-meta">${info.meta} · ${acts.length} กิจกรรม</span></div>`;
+      const subgroups = {}; const noSub = [];
+      for (const a of acts) { if (a.subgroup) { if (!subgroups[a.subgroup]) subgroups[a.subgroup] = []; subgroups[a.subgroup].push(a); } else noSub.push(a); }
+      if (noSub.length) html += `<div class="activity-list">${noSub.map(activityCard).join('')}</div>`;
+      for (const [sg, sgActs] of Object.entries(subgroups)) { html += `<div class="subgroup-label">${sg}</div><div class="activity-list">${sgActs.map(activityCard).join('')}</div>`; }
+      html += '</div>';
+    }
+    content.innerHTML = html;
+    content.querySelectorAll('.activity-check').forEach(cb => { cb.addEventListener('change', e => toggleActivity(e.target.dataset.id, e.target.checked)); });
+  }
+
+  function toggleActivity(id, checked) {
+    if (checked) statusMap[id] = { done: true, done_at: new Date().toISOString() }; else delete statusMap[id];
+    render();
+    persistActivity(id, checked);
+  }
+  async function persistActivity(id, checked) {
+    if (API_URL) {
+      writing = true;
+      try { await apiPost({ kind: 'activity', id: id, done: checked, done_at: checked ? statusMap[id].done_at : '' }); online = true; }
+      catch (e) { online = false; }
+      finally { writing = false; updateConn(); }
+    } else { saveOfflineStatus(); }
+  }
+
+  function buildAndRender() {
+    activities = buildActivities(currentYear);
+    populateYearSelect();
+    populateSemFilters();
+    renderSemTable();
+    updateTitle();
+    setTodayNote();
+    render();
+    updateConn();
+  }
+
+  // ============ CALENDAR MODAL ============
+  function openCalModal(prefillYear) {
+    const y = prefillYear || currentYear;
+    const cfg = calendars[y] || { sems: {}, budget: {} };
+    const g = id => document.getElementById(id);
+    g('cy-year').value = y || '';
+    g('cy-s1-open').value = (cfg.sems && cfg.sems['1'] && cfg.sems['1'].open) || '';
+    g('cy-s1-last').value = (cfg.sems && cfg.sems['1'] && cfg.sems['1'].lastDay) || '';
+    g('cy-s2-open').value = (cfg.sems && cfg.sems['2'] && cfg.sems['2'].open) || '';
+    g('cy-s2-last').value = (cfg.sems && cfg.sems['2'] && cfg.sems['2'].lastDay) || '';
+    g('cy-s3-open').value = (cfg.sems && cfg.sems['3'] && cfg.sems['3'].open) || '';
+    g('cy-s3-last').value = (cfg.sems && cfg.sems['3'] && cfg.sems['3'].lastDay) || '';
+    g('cy-bud-date').value = (cfg.budget && cfg.budget.date) || '';
+    g('cy-bud-fy').value = (cfg.budget && cfg.budget.fy) || '';
+    document.getElementById('calModal').style.display = 'flex';
+  }
+  function closeCalModal() { document.getElementById('calModal').style.display = 'none'; }
+  async function saveCalModal() {
+    const year = Number(document.getElementById('cy-year').value);
+    if (!year) { alert('กรุณากรอกปีการศึกษา'); return; }
+    const v = id => document.getElementById(id).value;
+    const config = {
+      sems: {
+        '1': { open: v('cy-s1-open'), lastDay: v('cy-s1-last') },
+        '2': { open: v('cy-s2-open'), lastDay: v('cy-s2-last') },
+        '3': { open: v('cy-s3-open'), lastDay: v('cy-s3-last') }
+      },
+      budget: { date: v('cy-bud-date'), fy: Number(v('cy-bud-fy')) || (year + 1) }
+    };
+    calendars[year] = config;
+    currentYear = year;
+    localStorage.setItem(YEAR_KEY, year);
+    closeCalModal();
+    buildAndRender();
+    if (API_URL) { writing = true; try { await apiPost({ kind: 'calendar', year: year, config: config }); online = true; } catch (e) { online = false; } finally { writing = false; updateConn(); } }
+    else { saveOfflineCalendars(); }
+  }
+  window.closeCalModal = closeCalModal;
+  window.saveCalModal = saveCalModal;
+
+  // ============ WIRING ============
+  document.getElementById('yearSelect').addEventListener('change', e => {
+    currentYear = Number(e.target.value);
+    localStorage.setItem(YEAR_KEY, currentYear);
+    filter.sem = 'all'; saveFilter();
+    buildAndRender();
+  });
+  document.getElementById('manageYearBtn').addEventListener('click', () => openCalModal(currentYear));
+  document.querySelectorAll('[data-filter-status]').forEach(btn => {
+    if (btn.dataset.filterStatus === filter.status) { document.querySelectorAll('[data-filter-status]').forEach(b => b.classList.remove('active')); btn.classList.add('active'); }
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-filter-status]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active'); filter.status = btn.dataset.filterStatus; saveFilter(); render();
+    });
+  });
+  document.getElementById('resetBtn').addEventListener('click', async () => {
+    if (!confirm('ต้องการรีเซ็ตสถานะกิจกรรมของปีนี้ทั้งหมดหรือไม่?')) return;
+    const ids = activities.map(a => a.id).filter(id => statusMap[id]);
+    ids.forEach(id => delete statusMap[id]);
+    render();
+    if (API_URL) { writing = true; for (const id of ids) { try { await apiPost({ kind: 'activity', id: id, done: false, done_at: '' }); } catch (e) {} } writing = false; online = true; updateConn(); }
+    else { saveOfflineStatus(); }
+  });
+  document.getElementById('calModal').addEventListener('click', function (e) { if (e.target === this) closeCalModal(); });
+
+  loadAll();
+  if (API_URL) setInterval(refreshStatuses, AUTO_REFRESH_MS);
+</script>
+</body>
+</html>

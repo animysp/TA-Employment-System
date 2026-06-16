@@ -39,6 +39,10 @@ function readTasks() {
       if (h === 'due_date' && v instanceof Date) {
         v = Utilities.formatDate(v, Session.getScriptTimeZone(), 'yyyy-MM-dd');
       }
+      // คอลัมน์ time ถ้า Sheet เก็บเป็นค่าเวลา (Date) ให้แปลงเป็น HH:mm
+      if (h === 'time' && v instanceof Date) {
+        v = Utilities.formatDate(v, Session.getScriptTimeZone(), 'HH:mm');
+      }
       obj[h] = (v === null || v === undefined) ? '' : v;
     });
     obj.id = Number(obj.id);
@@ -48,7 +52,75 @@ function readTasks() {
 }
 
 function doGet(e) {
+  var type = (e && e.parameter && e.parameter.type) ? e.parameter.type : '';
+  if (type === 'tracker') {
+    return jsonOutput({ ok: true, activities: readActivities(), calendars: readCalendars() });
+  }
   return jsonOutput({ ok: true, tasks: readTasks() });
+}
+
+/* ===== TA Activity Tracker: Activities + Calendars sheets ===== */
+function getOrCreateSheet(name, headers) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName(name);
+  if (!sh) { sh = ss.insertSheet(name); sh.appendRow(headers); }
+  else if (sh.getLastRow() === 0) { sh.appendRow(headers); }
+  return sh;
+}
+
+function readActivities() {
+  var sh = getOrCreateSheet('Activities', ['id', 'done', 'done_at']);
+  var data = sh.getDataRange().getValues();
+  var out = [];
+  for (var i = 1; i < data.length; i++) {
+    var id = data[i][0];
+    if (id === '' || id === null) continue;
+    var doneCell = data[i][1];
+    var done = (doneCell === true || String(doneCell).toUpperCase() === 'TRUE');
+    out.push({ id: String(id), done: done, done_at: data[i][2] ? String(data[i][2]) : '' });
+  }
+  return out;
+}
+
+function readCalendars() {
+  var sh = getOrCreateSheet('Calendars', ['year', 'config']);
+  var data = sh.getDataRange().getValues();
+  var out = [];
+  for (var i = 1; i < data.length; i++) {
+    var y = data[i][0];
+    if (y === '' || y === null) continue;
+    var cfg = {};
+    try { cfg = JSON.parse(data[i][1]); } catch (e) { cfg = {}; }
+    out.push({ year: Number(y), config: cfg });
+  }
+  return out;
+}
+
+function upsertActivity(body) {
+  var sh = getOrCreateSheet('Activities', ['id', 'done', 'done_at']);
+  var data = sh.getDataRange().getValues();
+  var rowIdx = -1;
+  for (var i = 1; i < data.length; i++) {
+    if (String(data[i][0]) === String(body.id)) { rowIdx = i; break; }
+  }
+  var doneVal = body.done ? true : false;
+  var at = body.done_at || (doneVal ? new Date().toISOString() : '');
+  if (rowIdx < 0) sh.appendRow([String(body.id), doneVal, at]);
+  else { sh.getRange(rowIdx + 1, 2).setValue(doneVal); sh.getRange(rowIdx + 1, 3).setValue(at); }
+  return jsonOutput({ ok: true, id: body.id });
+}
+
+function upsertCalendar(body) {
+  var sh = getOrCreateSheet('Calendars', ['year', 'config']);
+  var data = sh.getDataRange().getValues();
+  var rowIdx = -1;
+  for (var i = 1; i < data.length; i++) {
+    if (Number(data[i][0]) === Number(body.year)) { rowIdx = i; break; }
+  }
+  var cfgStr = JSON.stringify(body.config || {});
+  if (rowIdx < 0) sh.appendRow([Number(body.year), cfgStr]);
+  else sh.getRange(rowIdx + 1, 2).setValue(cfgStr);
+  return jsonOutput({ ok: true, year: Number(body.year) });
 }
 
 function doPost(e) {
@@ -60,6 +132,12 @@ function doPost(e) {
   }
   try {
     var body = JSON.parse(e.postData.contents);
+
+    // ----- TA Activity Tracker dispatch -----
+    var kind = body.kind || '';
+    if (kind === 'activity') return upsertActivity(body);
+    if (kind === 'calendar') return upsertCalendar(body);
+
     var action = body.action || 'update';
     var sheet = getSheet();
     var data = sheet.getDataRange().getValues();

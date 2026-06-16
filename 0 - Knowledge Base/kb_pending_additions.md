@@ -4,7 +4,7 @@
 >
 > **Sources compared:**
 > - `0 - Tasks/ตารางปฏิทินกิจกรรม.docx` (5-STEP activity calendar)
-> - `0 - Tasks/ta-tracker.html` (live tracker prototype)
+> - `0 - Tasks/academic-year-calendar.html` (live tracker prototype)
 > - `0 - Knowledge Base/ta_employment_kb.md` (current KB, last updated 2026-05-28)
 >
 > **Last review:** 2026-05-28
@@ -185,7 +185,7 @@ Lab Head and CAMT Staff are **not mentioned** in either source for Step 4–5. K
 
 ## 9. Artifact-Specific Conventions (ทางเลือก — ไม่จำเป็นต้องอยู่ใน KB หลัก)
 
-These are UI conventions used in `ta-tracker.html` that *could* be documented as a standard if the tracker becomes the official tool:
+These are UI conventions used in `academic-year-calendar.html` that *could* be documented as a standard if the tracker becomes the official tool:
 
 - **Semester label format used in tracker:** `1/69`, `2/69`, `3/69` (differs from KB convention `69-1`, `69-2`, `69-summer`)
 - **Status classification rules:**

@@ -313,6 +313,17 @@
 
   const CATEGORIES = ['Employment Process', 'System Maintenance', 'Meeting'];
 
+  // ทำให้เวลาแสดงผลอ่านง่ายเสมอ: ถ้าเป็น ISO datetime (จาก Google Sheets) แปลงเป็น HH:MM
+  function cleanTime(v) {
+    if (!v) return '';
+    const s = String(v).trim();
+    if (/\d{4}-\d{2}-\d{2}T/.test(s)) {
+      const d = new Date(s);
+      if (!isNaN(d)) return ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
+    }
+    return s;   // เช่น "13:30" หรือ "10:00 AM"
+  }
+
   function normalizeOne(t) {
     let category = String(t.category || 'Employment Process');
     const legacyType = String(t.type || 'task');
@@ -326,7 +337,7 @@
       status: (String(t.status).toLowerCase() === 'done') ? 'done' : 'todo',
       type: category === 'Meeting' ? 'meeting' : 'task',   // type ผูกกับ category อัตโนมัติ
       due_date: t.due_date ? String(t.due_date) : '',
-      time: t.time ? String(t.time) : '',
+      time: cleanTime(t.time),
       location: t.location ? String(t.location) : '',
       description: String(t.description || '')
     };
