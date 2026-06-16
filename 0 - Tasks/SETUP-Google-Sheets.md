@@ -104,7 +104,7 @@
 
 1. ใช้ `Code.gs` เวอร์ชันล่าสุด (มีส่วน Activities + Calendars) วางทับใน Apps Script
 2. **Deploy เวอร์ชันใหม่** (Manage deployments → ✏️ → New version → Deploy)
-3. เปิดหน้าปฏิทิน — ระบบจะ **สร้างแท็บ `Activities` และ `Calendars` ให้อัตโนมัติ** ในสเปรดชีตเดิม
+3. เปิดหน้าปฏิทิน โดยเปิดไฟล์ `index.html` (หน้าหลัก) แล้วคลิกการ์ด **"Academic Year Calendar"** หรือเปิดไฟล์ `0 - Tasks/academic-year-calendar.html` ตรง ๆ (ถ้า host บน GitHub Pages ก็เข้าผ่าน URL ของเว็บ) — เมื่อเปิดครั้งแรก ระบบจะ **สร้างแท็บ `Activities` และ `Calendars` ให้อัตโนมัติ** ในสเปรดชีตเดิม
    - `Activities`: เก็บสถานะ "เสร็จแล้ว" ของแต่ละกิจกรรม (id, done, done_at)
    - `Calendars`: เก็บปฏิทินแต่ละปีการศึกษา (year, config JSON)
 

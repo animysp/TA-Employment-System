@@ -60,6 +60,17 @@ function doGet(e) {
 }
 
 /* ===== TA Activity Tracker: Activities + Calendars sheets ===== */
+
+/**
+ * รัน "หนึ่งครั้ง" ในตัว Apps Script editor เพื่อสร้างแท็บ Activities และ Calendars ทันที
+ * (เลือก setupTrackerSheets ในเมนู Run แล้วกด Run)
+ */
+function setupTrackerSheets() {
+  getOrCreateSheet('Activities', ['id', 'done', 'done_at']);
+  getOrCreateSheet('Calendars', ['year', 'config']);
+  Logger.log('สร้างแท็บ Activities และ Calendars เรียบร้อย');
+}
+
 function getOrCreateSheet(name, headers) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sh = ss.getSheetByName(name);
