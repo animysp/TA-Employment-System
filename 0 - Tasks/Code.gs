@@ -148,6 +148,51 @@ function doPost(e) {
   }
 }
 
+/**
+ * รันฟังก์ชันนี้ "หนึ่งครั้ง" ในตัว Apps Script editor เพื่อกดอนุญาตสิทธิ์ Calendar
+ * (เลือก authorizeCalendar ในเมนู Run ด้านบน แล้วกด Run → Allow)
+ * จะสร้างปฏิทิน "TA Tasks" ให้ด้วยถ้ายังไม่มี
+ */
+function authorizeCalendar() {
+  var cal = getTaskCalendar();
+  Logger.log('OK: calendar "' + cal.getName() + '" พร้อมใช้งาน');
+}
+
+/**
+ * รัน "หนึ่งครั้ง" หลังย้ายบัญชี/นำเข้าข้อมูลใหม่ เพื่อสร้าง event ในปฏิทิน "TA Tasks"
+ * ให้กับทุก task ที่มี due_date แล้วเขียน event_id กลับลงชีต
+ * (ต้องมีคอลัมน์ event_id ในชีตก่อน)
+ */
+function syncAllToCalendar() {
+  var sheet = getSheet();
+  var data = sheet.getDataRange().getValues();
+  var headers = data[0].map(function (h) { return String(h).trim(); });
+  var evCol = headers.indexOf('event_id');
+  if (evCol < 0) { Logger.log('ยังไม่มีคอลัมน์ event_id'); return; }
+  var col = {};
+  headers.forEach(function (h, j) { col[h] = j; });
+
+  var count = 0;
+  for (var i = 1; i < data.length; i++) {
+    var row = data[i];
+    if (row.every(function (c) { return c === '' || c === null; })) continue;
+    var due = toDateStr(row[col['due_date']]);
+    if (!due) continue;
+    var task = {
+      title: row[col['title']],
+      due_date: due,
+      time: col['time'] !== undefined ? row[col['time']] : '',
+      description: col['description'] !== undefined ? row[col['description']] : '',
+      location: col['location'] !== undefined ? row[col['location']] : ''
+    };
+    var existing = String(row[evCol] || '');
+    var newId = syncEvent(task, existing);
+    sheet.getRange(i + 1, evCol + 1).setValue(newId);
+    count++;
+  }
+  Logger.log('ซิงก์ปฏิทินแล้ว ' + count + ' รายการ');
+}
+
 /* ===================== Google Calendar helpers ===================== */
 
 function getTaskCalendar() {
