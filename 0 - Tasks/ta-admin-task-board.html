@@ -48,18 +48,37 @@
     .footer { text-align: center; font-size: 12px; color: #B4B2A9; margin-top: 3rem; padding-top: 1.5rem; border-top: 0.5px solid #D3D1C7; }
     .hidden { display: none !important; }
     .task-card { position: relative; }
-    .task-title { padding-right: 34px; }
+    .task-title { padding-right: 66px; }
     .task-check { position: absolute; top: 14px; right: 16px; width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid #C9C7BD; background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: all 0.15s; }
     .task-check:hover { border-color: #185FA5; }
     .task-check.checked { background: #3B6D11; border-color: #3B6D11; }
     .task-check svg { width: 13px; height: 13px; stroke: #fff; }
+    .task-edit { position: absolute; top: 14px; right: 46px; width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid #C9C7BD; background: #fff; color: #5F5E5A; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; line-height: 1; transition: all 0.15s; }
+    .task-edit:hover { border-color: #185FA5; background: #F1EFE8; color: #185FA5; }
+    .task-edit svg { width: 13px; height: 13px; stroke: currentColor; }
     .board-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 1.25rem; }
     .action-btn { font-size: 12px; font-weight: 500; padding: 6px 14px; border-radius: 8px; border: 0.5px solid #D3D1C7; background: #fff; color: #5F5E5A; cursor: pointer; transition: all 0.15s; }
     .action-btn:hover { background: #F1EFE8; }
+    .action-btn.primary { background: #185FA5; color: #fff; border-color: #185FA5; }
+    .action-btn.primary:hover { background: #134f88; }
+    .action-btn.danger { color: #B3261E; border-color: #E3C4C0; }
+    .action-btn.danger:hover { background: #FBEDEA; }
+    .add-btn { background: #EEEDFE; color: #3C3489; border-color: #DAD7F7; }
+    .add-btn:hover { background: #E4E1FB; }
     .save-note { font-size: 12px; color: #B4B2A9; }
     .save-note.dirty { color: #633806; }
     #reset-btn { margin-left: auto; }
-    @media (max-width: 600px) { .summary { grid-template-columns: repeat(2, 1fr); } .header h1 { font-size: 18px; } .save-note { width: 100%; } }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(26,26,24,0.45); display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 100; }
+    .modal { background: #fff; border-radius: 16px; padding: 22px 24px; width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; }
+    .modal h3 { font-size: 17px; font-weight: 600; margin-bottom: 16px; }
+    .modal label { display: block; font-size: 12px; color: #5F5E5A; font-weight: 500; margin-bottom: 12px; }
+    .modal input, .modal select, .modal textarea { width: 100%; margin-top: 4px; padding: 8px 10px; font-size: 13px; font-family: inherit; border: 0.5px solid #D3D1C7; border-radius: 8px; background: #fff; color: #1a1a18; }
+    .modal textarea { min-height: 70px; resize: vertical; }
+    .modal input:focus, .modal select:focus, .modal textarea:focus { outline: none; border-color: #185FA5; }
+    .modal-row { display: flex; gap: 10px; }
+    .modal-row label { flex: 1; }
+    .modal-actions { display: flex; gap: 8px; align-items: center; margin-top: 18px; }
+    @media (max-width: 600px) { .summary { grid-template-columns: repeat(2, 1fr); } .header h1 { font-size: 18px; } .save-note { width: 100%; } .modal-row { flex-direction: column; gap: 0; } }
   </style>
 </head>
 <body>
@@ -91,12 +110,65 @@
   </div>
 
   <div class="board-actions">
+    <button class="action-btn add-btn" onclick="openAdd()">＋ เพิ่มงาน</button>
     <span class="save-note" id="save-note"></span>
     <button class="action-btn" id="reset-btn" onclick="resetChanges()">↺ ล้างการเปลี่ยนแปลง</button>
     <button class="action-btn export-btn" onclick="exportTasksJs()">💾 บันทึกไฟล์ offline</button>
   </div>
 
   <div id="task-board"></div>
+
+  <div class="modal-overlay" id="modal" style="display:none">
+    <div class="modal">
+      <h3 id="modal-title">แก้ไขงาน</h3>
+      <input type="hidden" id="f-id">
+      <label>ชื่องาน
+        <input id="f-title" placeholder="ชื่องาน">
+      </label>
+      <div class="modal-row">
+        <label>หมวดหมู่
+          <select id="f-category">
+            <option value="Employment Process">Employment Process</option>
+            <option value="System Maintenance">System Maintenance</option>
+          </select>
+        </label>
+        <label>ประเภท
+          <select id="f-type">
+            <option value="task">Task</option>
+            <option value="meeting">Meeting</option>
+          </select>
+        </label>
+      </div>
+      <div class="modal-row">
+        <label>สถานะ
+          <select id="f-status">
+            <option value="todo">To Do</option>
+            <option value="done">Done</option>
+          </select>
+        </label>
+        <label>กำหนดส่ง / วันที่
+          <input type="date" id="f-due">
+        </label>
+      </div>
+      <div class="modal-row">
+        <label>เวลา (ถ้ามี)
+          <input id="f-time" placeholder="เช่น 10:00 AM">
+        </label>
+        <label>สถานที่ (ถ้ามี)
+          <input id="f-location" placeholder="เช่น ห้อง 315">
+        </label>
+      </div>
+      <label>รายละเอียด
+        <textarea id="f-desc" placeholder="รายละเอียดงาน"></textarea>
+      </label>
+      <div class="modal-actions">
+        <button class="action-btn danger" id="btn-delete" onclick="deleteCurrent()">🗑 ลบงานนี้</button>
+        <span style="flex:1"></span>
+        <button class="action-btn" onclick="closeModal()">ยกเลิก</button>
+        <button class="action-btn primary" onclick="saveModal()">บันทึก</button>
+      </div>
+    </div>
+  </div>
 
   <div class="footer">CAMT — Teaching Assistants Employment Process &nbsp;·&nbsp; Last updated Jun 15, 2026</div>
 </div>
@@ -156,6 +228,7 @@
 
           const checkIcon = isDone ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>' : '';
           card.innerHTML = `
+            <button class="task-edit" onclick="openEdit(${task.id})" title="แก้ไขงาน" aria-label="edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></button>
             <button class="task-check${isDone ? ' checked' : ''}" onclick="toggleStatus(${task.id})" title="${isDone ? 'เปลี่ยนเป็น To Do' : 'ทำเครื่องหมายว่าเสร็จ'}" aria-label="toggle status">${checkIcon}</button>
             <div class="task-num">#${task.id}</div>
             <div class="task-title${isDone ? ' done-title' : ''}">${task.title}</div>
@@ -211,58 +284,64 @@
   //  CONFIG — วาง URL ของ Google Apps Script Web App ตรงนี้
   //  (ดูวิธีในไฟล์ SETUP-Google-Sheets.md) ถ้าเว้นว่าง = โหมดออฟไลน์
   //  ใช้ข้อมูลจาก tasks.js + บันทึกในเบราว์เซอร์
-  const API_URL = 'https://script.google.com/macros/s/AKfycbxSv9noJfPYlZSrzgPX3y9gsOZBxlkZUuB3cizevdmB-h50u7jjfSuPiqPAPCBNF5Al/exec';
+  const API_URL = 'https://script.google.com/macros/s/AKfycbz9A4pIMwl1ZdPSCMelIL_ZirHasSsk8pTVwcQwwBG6sMPejZ12-L7CV82hqd-Rc8laiQ/exec';
   const AUTO_REFRESH_MS = 15000;   // ดึงการเปลี่ยนแปลงของคนอื่นทุก 15 วินาที
   // ============================================================
 
-  const STORAGE_KEY = 'ta-task-status-overrides';
+  const OFFLINE_KEY = 'ta-tasks-offline';   // เก็บข้อมูลทั้งชุดเมื่อทำงานออฟไลน์
   let tasks = [];
   let currentFilter = 'all';
   let online = false;
   let writing = false;
+  let editingId = null;
 
-  function loadOverrides() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
-    catch (e) { return {}; }
-  }
-  function saveOverrides(o) { localStorage.setItem(STORAGE_KEY, JSON.stringify(o)); }
-
-  function normalize(arr) {
-    return arr.map(t => ({
+  function normalizeOne(t) {
+    return {
       id: Number(t.id),
       title: String(t.title || ''),
-      category: String(t.category || ''),
+      category: String(t.category || 'Employment Process'),
       status: (String(t.status).toLowerCase() === 'done') ? 'done' : 'todo',
       type: String(t.type || 'task'),
       due_date: t.due_date ? String(t.due_date) : '',
       time: t.time ? String(t.time) : '',
       location: t.location ? String(t.location) : '',
       description: String(t.description || '')
-    })).sort((a, b) => a.id - b.id);
+    };
   }
+  function normalize(arr) { return arr.map(normalizeOne).sort((a, b) => a.id - b.id); }
+
+  // ---- offline persistence: full snapshot ----
+  function loadOfflineSnapshot() {
+    try { const s = JSON.parse(localStorage.getItem(OFFLINE_KEY)); return Array.isArray(s) ? s : null; }
+    catch (e) { return null; }
+  }
+  function saveOfflineSnapshot() { localStorage.setItem(OFFLINE_KEY, JSON.stringify(tasks)); }
 
   function fromFile() {
-    const t = TASKS.map(x => ({ ...x }));
-    const o = loadOverrides();
-    t.forEach(x => { if (o[x.id]) x.status = o[x.id]; });
-    return normalize(t);
+    const snap = loadOfflineSnapshot();
+    return normalize(snap || TASKS.map(x => ({ ...x })));
   }
 
+  function nextId() {
+    return tasks.reduce((m, t) => Math.max(m, Number(t.id) || 0), 0) + 1;
+  }
+
+  // ---- API helpers ----
   async function apiGet() {
     const res = await fetch(API_URL, { method: 'GET' });
     const data = await res.json();
     if (!data.ok) throw new Error('bad response');
     return normalize(data.tasks);
   }
-
-  async function apiUpdate(id, status) {
+  async function apiPost(payload) {
     const res = await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ id: id, status: status })
+      body: JSON.stringify(payload)
     });
     const data = await res.json();
-    if (!data.ok) throw new Error('update failed');
+    if (!data.ok) throw new Error(data.error || 'request failed');
+    return data;
   }
 
   async function loadTasks() {
@@ -275,6 +354,7 @@
     render();
   }
 
+  // ---- mutations (work in both online and offline modes) ----
   async function toggleStatus(id) {
     const t = tasks.find(x => x.id === id);
     if (!t) return;
@@ -283,20 +363,119 @@
     render();
     if (API_URL) {
       writing = true;
-      try { await apiUpdate(id, newStatus); online = true; updateSaveNote(); }
+      try { await apiPost({ action: 'update', id: id, status: newStatus }); online = true; updateSaveNote(); }
       catch (e) {
         t.status = newStatus === 'done' ? 'todo' : 'done';   // revert
-        online = false;
-        render();
-        alert('บันทึกไม่สำเร็จ — ตรวจสอบการเชื่อมต่ออินเทอร์เน็ตหรือ URL ของ Apps Script');
+        online = false; render();
+        alert('บันทึกไม่สำเร็จ — ตรวจสอบการเชื่อมต่อหรือ URL ของ Apps Script');
       } finally { writing = false; }
     } else {
-      const orig = TASKS.find(x => x.id === id);
-      const o = loadOverrides();
-      if (orig && orig.status === newStatus) delete o[id]; else o[id] = newStatus;
-      saveOverrides(o);
-      updateSaveNote();
+      saveOfflineSnapshot(); updateSaveNote();
     }
+  }
+
+  async function persistAdd(task) {
+    if (API_URL) {
+      writing = true;
+      try { await apiPost(Object.assign({ action: 'add' }, task)); await loadTasks(); }
+      finally { writing = false; }
+    } else {
+      task.id = nextId();
+      tasks.push(normalizeOne(task));
+      saveOfflineSnapshot(); render();
+    }
+  }
+
+  async function persistUpdate(task) {
+    if (API_URL) {
+      writing = true;
+      try { await apiPost(Object.assign({ action: 'update' }, task)); await loadTasks(); }
+      finally { writing = false; }
+    } else {
+      const i = tasks.findIndex(t => t.id === task.id);
+      if (i >= 0) tasks[i] = normalizeOne(task);
+      saveOfflineSnapshot(); render();
+    }
+  }
+
+  async function persistDelete(id) {
+    if (API_URL) {
+      writing = true;
+      try { await apiPost({ action: 'delete', id: id }); await loadTasks(); }
+      finally { writing = false; }
+    } else {
+      tasks = tasks.filter(t => t.id !== id);
+      saveOfflineSnapshot(); render();
+    }
+  }
+
+  // ---- modal (add / edit / delete) ----
+  function openAdd() {
+    editingId = null;
+    document.getElementById('modal-title').textContent = 'เพิ่มงานใหม่';
+    document.getElementById('f-id').value = '';
+    document.getElementById('f-title').value = '';
+    document.getElementById('f-category').value = 'Employment Process';
+    document.getElementById('f-type').value = 'task';
+    document.getElementById('f-status').value = 'todo';
+    document.getElementById('f-due').value = '';
+    document.getElementById('f-time').value = '';
+    document.getElementById('f-location').value = '';
+    document.getElementById('f-desc').value = '';
+    document.getElementById('btn-delete').style.display = 'none';
+    document.getElementById('modal').style.display = 'flex';
+  }
+
+  function openEdit(id) {
+    const t = tasks.find(x => x.id === id);
+    if (!t) return;
+    editingId = id;
+    document.getElementById('modal-title').textContent = 'แก้ไขงาน #' + id;
+    document.getElementById('f-id').value = id;
+    document.getElementById('f-title').value = t.title;
+    document.getElementById('f-category').value = t.category || 'Employment Process';
+    document.getElementById('f-type').value = t.type || 'task';
+    document.getElementById('f-status').value = t.status;
+    document.getElementById('f-due').value = t.due_date || '';
+    document.getElementById('f-time').value = t.time || '';
+    document.getElementById('f-location').value = t.location || '';
+    document.getElementById('f-desc').value = t.description || '';
+    document.getElementById('btn-delete').style.display = 'inline-block';
+    document.getElementById('modal').style.display = 'flex';
+  }
+
+  function closeModal() { document.getElementById('modal').style.display = 'none'; }
+
+  function readForm() {
+    return {
+      title: document.getElementById('f-title').value.trim(),
+      category: document.getElementById('f-category').value,
+      type: document.getElementById('f-type').value,
+      status: document.getElementById('f-status').value,
+      due_date: document.getElementById('f-due').value,
+      time: document.getElementById('f-time').value.trim(),
+      location: document.getElementById('f-location').value.trim(),
+      description: document.getElementById('f-desc').value.trim()
+    };
+  }
+
+  async function saveModal() {
+    const t = readForm();
+    if (!t.title) { alert('กรุณากรอกชื่องาน'); return; }
+    try {
+      if (editingId == null) { await persistAdd(t); }
+      else { t.id = editingId; await persistUpdate(t); }
+      closeModal();
+    } catch (e) {
+      alert('บันทึกไม่สำเร็จ: ' + e.message);
+    }
+  }
+
+  async function deleteCurrent() {
+    if (editingId == null) return;
+    if (!confirm('ลบงานนี้ออกอย่างถาวร?')) return;
+    try { await persistDelete(editingId); closeModal(); }
+    catch (e) { alert('ลบไม่สำเร็จ: ' + e.message); }
   }
 
   function updateSaveNote() {
@@ -305,18 +484,15 @@
     if (API_URL) {
       note.textContent = online
         ? '🟢 เชื่อมต่อ Google Sheets — บันทึกอัตโนมัติ'
-        : '🔴 ออฟไลน์ — แสดงข้อมูลจากไฟล์ (การแก้จะไม่ถูกบันทึก)';
+        : '🔴 ออฟไลน์ — แสดงข้อมูลจากไฟล์ (การแก้จะไม่ถูกบันทึกขึ้น Sheets)';
       note.classList.toggle('dirty', !online);
       if (resetBtn) resetBtn.textContent = '↺ รีเฟรชจาก Sheets';
     } else {
-      const n = Object.keys(loadOverrides()).length;
-      if (n > 0) {
-        note.textContent = `● มีการเปลี่ยนแปลง ${n} รายการ — บันทึกในเบราว์เซอร์นี้`;
-        note.classList.add('dirty');
-      } else {
-        note.textContent = 'ตรงกับไฟล์ tasks.js';
-        note.classList.remove('dirty');
-      }
+      const dirty = loadOfflineSnapshot() != null;
+      note.textContent = dirty
+        ? '● แก้ไขในเบราว์เซอร์นี้ (ยังไม่ได้บันทึกลงไฟล์)'
+        : 'ตรงกับไฟล์ tasks.js';
+      note.classList.toggle('dirty', dirty);
       if (resetBtn) resetBtn.textContent = '↺ ล้างการเปลี่ยนแปลง';
     }
   }
@@ -347,11 +523,16 @@
 
   function resetChanges() {
     if (API_URL) { loadTasks(); return; }   // โหมดออนไลน์ = รีเฟรชจาก Sheets
-    if (!confirm('ล้างการเปลี่ยนแปลงสถานะทั้งหมดในเบราว์เซอร์นี้ และกลับไปใช้ค่าจากไฟล์ tasks.js?')) return;
-    localStorage.removeItem(STORAGE_KEY);
+    if (!confirm('ล้างการเปลี่ยนแปลงทั้งหมดในเบราว์เซอร์นี้ และกลับไปใช้ค่าจากไฟล์ tasks.js?')) return;
+    localStorage.removeItem(OFFLINE_KEY);
     tasks = fromFile();
     render();
   }
+
+  // ปิด modal เมื่อคลิกพื้นหลัง
+  document.getElementById('modal').addEventListener('click', function (e) {
+    if (e.target === this) closeModal();
+  });
 
   loadTasks();
   if (API_URL) setInterval(() => { if (!writing) loadTasks(); }, AUTO_REFRESH_MS);
