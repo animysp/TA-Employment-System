@@ -1,0 +1,10 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Office temp/lock files
+~$*
+*.tmp
+
+# Thumbnails
+Thumbs.db
