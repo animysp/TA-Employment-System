@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TA Admin Task Board — CAMT</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "Sukhumvit Set", "IBM Plex Sans Thai", "Noto Sans Thai", BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #F5F4F0; color: #1a1a18; min-height: 100vh; padding: 2rem 1rem; }
+    .container { max-width: 860px; margin: 0 auto; }
+    .header { margin-bottom: 2rem; }
+    .header h1 { font-size: 22px; font-weight: 600; color: #1a1a18; }
+    .header p { font-size: 13px; color: #888780; margin-top: 4px; }
+    .last-updated { font-size: 12px; color: #B4B2A9; margin-top: 6px; }
+    .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 2rem; }
+    .stat { background: #fff; border: 0.5px solid #D3D1C7; border-radius: 10px; padding: 14px 16px; }
+    .stat-label { font-size: 12px; color: #888780; margin-bottom: 4px; }
+    .stat-number { font-size: 24px; font-weight: 600; color: #1a1a18; }
+    .stat.highlight .stat-number { color: #185FA5; }
+    .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .filter-btn { font-size: 12px; font-weight: 500; padding: 5px 14px; border-radius: 20px; border: 0.5px solid #D3D1C7; background: #fff; color: #5F5E5A; cursor: pointer; transition: all 0.15s; }
+    .filter-btn:hover { background: #F1EFE8; }
+    .filter-btn.active { background: #1a1a18; color: #fff; border-color: #1a1a18; }
+    .category-section { margin-bottom: 2rem; }
+    .category-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .category-pill { font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.07em; }
+    .cat-employment { background: #EEEDFE; color: #3C3489; }
+    .cat-maintenance { background: #FAEEDA; color: #633806; }
+    .category-count { font-size: 12px; color: #B4B2A9; }
+    .status-group-label { font-size: 11px; color: #B4B2A9; text-transform: uppercase; letter-spacing: 0.07em; margin: 14px 0 8px; }
+    .task-card { background: #fff; border: 0.5px solid #D3D1C7; border-radius: 12px; padding: 14px 16px; margin-bottom: 8px; transition: box-shadow 0.15s; }
+    .task-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+    .task-card.is-done { opacity: 0.55; }
+    .task-card.is-meeting { border-left: 3px solid #1D9E75; border-radius: 0 12px 12px 0; }
+    .task-num { font-size: 11px; color: #B4B2A9; margin-bottom: 3px; }
+    .task-title { font-size: 14px; font-weight: 600; color: #1a1a18; line-height: 1.4; }
+    .task-title.done-title { text-decoration: line-through; color: #888780; }
+    .task-desc { font-size: 13px; color: #5F5E5A; margin-top: 6px; line-height: 1.55; }
+    .task-meta { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
+    .badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 6px; }
+    .badge-todo { background: #E6F1FB; color: #185FA5; }
+    .badge-done { background: #EAF3DE; color: #3B6D11; }
+    .badge-meeting { background: #E1F5EE; color: #0F6E56; }
+    .due-badge { font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 6px; background: #EEEDFE; color: #3C3489; }
+    .location-badge { font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 6px; background: #F1EFE8; color: #5F5E5A; }
+    .no-due { font-size: 11px; color: #B4B2A9; }
+    .section-divider { border: none; border-top: 0.5px solid #D3D1C7; margin: 1.5rem 0; }
+    .footer { text-align: center; font-size: 12px; color: #B4B2A9; margin-top: 3rem; padding-top: 1.5rem; border-top: 0.5px solid #D3D1C7; }
+    .hidden { display: none !important; }
+    .task-card { position: relative; }
+    .task-title { padding-right: 34px; }
+    .task-check { position: absolute; top: 14px; right: 16px; width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid #C9C7BD; background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: all 0.15s; }
+    .task-check:hover { border-color: #185FA5; }
+    .task-check.checked { background: #3B6D11; border-color: #3B6D11; }
+    .task-check svg { width: 13px; height: 13px; stroke: #fff; }
+    .board-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 1.25rem; }
+    .action-btn { font-size: 12px; font-weight: 500; padding: 6px 14px; border-radius: 8px; border: 0.5px solid #D3D1C7; background: #fff; color: #5F5E5A; cursor: pointer; transition: all 0.15s; }
+    .action-btn:hover { background: #F1EFE8; }
+    .save-note { font-size: 12px; color: #B4B2A9; }
+    .save-note.dirty { color: #633806; }
+    #reset-btn { margin-left: auto; }
+    @media (max-width: 600px) { .summary { grid-template-columns: repeat(2, 1fr); } .header h1 { font-size: 18px; } .save-note { width: 100%; } }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <p style="margin-bottom:1rem;"><a href="../index.html" style="font-size:13px;color:#185FA5;text-decoration:none;">← หน้าหลัก / Home</a></p>
+
+  <div class="header">
+    <h1>TA Admin Task Board</h1>
+    <p>Teaching Assistants Employment Process — College of Arts, Media and Technology, CMU</p>
+    <p class="last-updated">Last updated: Jun 15, 2026</p>
+  </div>
+
+  <div class="summary">
+    <div class="stat"><div class="stat-label">Total tasks</div><div class="stat-number" id="count-total">—</div></div>
+    <div class="stat highlight"><div class="stat-label">To do</div><div class="stat-number" id="count-todo">—</div></div>
+    <div class="stat"><div class="stat-label">Done</div><div class="stat-number" id="count-done">—</div></div>
+    <div class="stat"><div class="stat-label">Has deadline</div><div class="stat-number" id="count-due">—</div></div>
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active" onclick="filterTasks('all', this)">All</button>
+    <button class="filter-btn" onclick="filterTasks('todo', this)">To Do</button>
+    <button class="filter-btn" onclick="filterTasks('done', this)">Done</button>
+    <button class="filter-btn" onclick="filterTasks('Employment Process', this)">Employment Process</button>
+    <button class="filter-btn" onclick="filterTasks('System Maintenance', this)">System Maintenance</button>
+    <button class="filter-btn" onclick="filterTasks('due', this)">Has Deadline</button>
+    <button class="filter-btn" onclick="filterTasks('meeting', this)">Meeting</button>
+  </div>
+
+  <div class="board-actions">
+    <span class="save-note" id="save-note"></span>
+    <button class="action-btn" id="reset-btn" onclick="resetChanges()">↺ ล้างการเปลี่ยนแปลง</button>
+    <button class="action-btn export-btn" onclick="exportTasksJs()">💾 บันทึกไฟล์ offline</button>
+  </div>
+
+  <div id="task-board"></div>
+
+  <div class="footer">CAMT — Teaching Assistants Employment Process &nbsp;·&nbsp; Last updated Jun 15, 2026</div>
+</div>
+
+<script src="tasks.js"></script>
+<script>
+  function formatDate(dateStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr + 'T00:00:00');
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  function slugify(str) {
+    return str.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  }
+
+  function renderBoard(tasks) {
+    const board = document.getElementById('task-board');
+    board.innerHTML = '';
+    const catOrder = ['Employment Process', 'System Maintenance'];
+    const allCats = [...new Set(tasks.map(t => t.category))];
+    const ordered = catOrder.filter(c => allCats.includes(c)).concat(allCats.filter(c => !catOrder.includes(c)));
+
+    ordered.forEach((cat, idx) => {
+      const catTasks = tasks.filter(t => t.category === cat);
+      const catId = 'cat-' + slugify(cat);
+      const pillClass = cat === 'Employment Process' ? 'cat-employment' : 'cat-maintenance';
+      const section = document.createElement('div');
+      section.className = 'category-section';
+      section.id = catId;
+      section.innerHTML = `<div class="category-header"><span class="category-pill ${pillClass}">${cat}</span><span class="category-count">${catTasks.length} task${catTasks.length !== 1 ? 's' : ''}</span></div>`;
+
+      ['todo', 'done'].forEach(status => {
+        const grouped = catTasks.filter(t => t.status === status);
+        if (!grouped.length) return;
+        const label = document.createElement('div');
+        label.className = 'status-group-label';
+        label.textContent = status === 'todo' ? 'To Do' : 'Done';
+        section.appendChild(label);
+
+        grouped.forEach(task => {
+          const isMeeting = task.type === 'meeting';
+          const isDone = task.status === 'done';
+          const card = document.createElement('div');
+          card.className = `task-card${isDone ? ' is-done' : ''}${isMeeting ? ' is-meeting' : ''}`;
+          card.dataset.category = task.category;
+          card.dataset.status = task.status;
+          card.dataset.due = task.due_date || 'none';
+          card.dataset.type = task.type || 'task';
+
+          const statusBadge = isDone ? `<span class="badge badge-done">Done</span>` : `<span class="badge badge-todo">To Do</span>`;
+          const meetingBadge = isMeeting ? `<span class="badge badge-meeting">Meeting</span>` : '';
+          const duePart = task.due_date
+            ? `<span class="due-badge">${isMeeting && task.time ? formatDate(task.due_date) + ' · ' + task.time : 'Due ' + formatDate(task.due_date)}</span>`
+            : `<span class="no-due">No due date</span>`;
+          const locationPart = task.location ? `<span class="location-badge">${task.location}</span>` : '';
+
+          const checkIcon = isDone ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>' : '';
+          card.innerHTML = `
+            <button class="task-check${isDone ? ' checked' : ''}" onclick="toggleStatus(${task.id})" title="${isDone ? 'เปลี่ยนเป็น To Do' : 'ทำเครื่องหมายว่าเสร็จ'}" aria-label="toggle status">${checkIcon}</button>
+            <div class="task-num">#${task.id}</div>
+            <div class="task-title${isDone ? ' done-title' : ''}">${task.title}</div>
+            ${task.description ? `<div class="task-desc">${task.description}</div>` : ''}
+            <div class="task-meta">${statusBadge}${meetingBadge}${duePart}${locationPart}</div>`;
+          section.appendChild(card);
+        });
+      });
+
+      board.appendChild(section);
+      if (idx < ordered.length - 1) {
+        const hr = document.createElement('hr');
+        hr.className = 'section-divider';
+        board.appendChild(hr);
+      }
+    });
+
+    document.getElementById('count-total').textContent = tasks.length;
+    document.getElementById('count-todo').textContent = tasks.filter(t => t.status === 'todo').length;
+    document.getElementById('count-done').textContent = tasks.filter(t => t.status === 'done').length;
+    document.getElementById('count-due').textContent = tasks.filter(t => t.due_date).length;
+  }
+
+  function filterTasks(type, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = type;
+    applyFilter(type);
+  }
+
+  function applyFilter(type) {
+    document.querySelectorAll('.task-card').forEach(card => {
+      const cat = card.dataset.category, status = card.dataset.status, due = card.dataset.due, dtype = card.dataset.type;
+      let show = type === 'all' || (type === 'todo' && status === 'todo') || (type === 'done' && status === 'done') || (type === 'due' && due !== 'none') || (type === 'meeting' && dtype === 'meeting') || cat === type;
+      card.classList.toggle('hidden', !show);
+    });
+    document.querySelectorAll('.category-section').forEach(s => {
+      s.classList.toggle('hidden', s.querySelectorAll('.task-card:not(.hidden)').length === 0);
+    });
+    document.querySelectorAll('.status-group-label').forEach(label => {
+      const cards = [];
+      let el = label.nextElementSibling;
+      while (el && el.classList.contains('task-card')) { cards.push(el); el = el.nextElementSibling; }
+      label.classList.toggle('hidden', !cards.some(c => !c.classList.contains('hidden')));
+    });
+    document.querySelectorAll('.section-divider').forEach(d => {
+      const prev = d.previousElementSibling, next = d.nextElementSibling;
+      d.classList.toggle('hidden', (!prev || prev.classList.contains('hidden')) || (!next || next.classList.contains('hidden')));
+    });
+  }
+
+  // ============================================================
+  //  CONFIG — วาง URL ของ Google Apps Script Web App ตรงนี้
+  //  (ดูวิธีในไฟล์ SETUP-Google-Sheets.md) ถ้าเว้นว่าง = โหมดออฟไลน์
+  //  ใช้ข้อมูลจาก tasks.js + บันทึกในเบราว์เซอร์
+  const API_URL = 'https://script.google.com/macros/s/AKfycbxSv9noJfPYlZSrzgPX3y9gsOZBxlkZUuB3cizevdmB-h50u7jjfSuPiqPAPCBNF5Al/exec';
+  const AUTO_REFRESH_MS = 15000;   // ดึงการเปลี่ยนแปลงของคนอื่นทุก 15 วินาที
+  // ============================================================
+
+  const STORAGE_KEY = 'ta-task-status-overrides';
+  let tasks = [];
+  let currentFilter = 'all';
+  let online = false;
+  let writing = false;
+
+  function loadOverrides() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+    catch (e) { return {}; }
+  }
+  function saveOverrides(o) { localStorage.setItem(STORAGE_KEY, JSON.stringify(o)); }
+
+  function normalize(arr) {
+    return arr.map(t => ({
+      id: Number(t.id),
+      title: String(t.title || ''),
+      category: String(t.category || ''),
+      status: (String(t.status).toLowerCase() === 'done') ? 'done' : 'todo',
+      type: String(t.type || 'task'),
+      due_date: t.due_date ? String(t.due_date) : '',
+      time: t.time ? String(t.time) : '',
+      location: t.location ? String(t.location) : '',
+      description: String(t.description || '')
+    })).sort((a, b) => a.id - b.id);
+  }
+
+  function fromFile() {
+    const t = TASKS.map(x => ({ ...x }));
+    const o = loadOverrides();
+    t.forEach(x => { if (o[x.id]) x.status = o[x.id]; });
+    return normalize(t);
+  }
+
+  async function apiGet() {
+    const res = await fetch(API_URL, { method: 'GET' });
+    const data = await res.json();
+    if (!data.ok) throw new Error('bad response');
+    return normalize(data.tasks);
+  }
+
+  async function apiUpdate(id, status) {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ id: id, status: status })
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error('update failed');
+  }
+
+  async function loadTasks() {
+    if (API_URL) {
+      try { tasks = await apiGet(); online = true; }
+      catch (e) { tasks = fromFile(); online = false; }
+    } else {
+      tasks = fromFile(); online = false;
+    }
+    render();
+  }
+
+  async function toggleStatus(id) {
+    const t = tasks.find(x => x.id === id);
+    if (!t) return;
+    const newStatus = t.status === 'done' ? 'todo' : 'done';
+    t.status = newStatus;          // optimistic update
+    render();
+    if (API_URL) {
+      writing = true;
+      try { await apiUpdate(id, newStatus); online = true; updateSaveNote(); }
+      catch (e) {
+        t.status = newStatus === 'done' ? 'todo' : 'done';   // revert
+        online = false;
+        render();
+        alert('บันทึกไม่สำเร็จ — ตรวจสอบการเชื่อมต่ออินเทอร์เน็ตหรือ URL ของ Apps Script');
+      } finally { writing = false; }
+    } else {
+      const orig = TASKS.find(x => x.id === id);
+      const o = loadOverrides();
+      if (orig && orig.status === newStatus) delete o[id]; else o[id] = newStatus;
+      saveOverrides(o);
+      updateSaveNote();
+    }
+  }
+
+  function updateSaveNote() {
+    const note = document.getElementById('save-note');
+    const resetBtn = document.getElementById('reset-btn');
+    if (API_URL) {
+      note.textContent = online
+        ? '🟢 เชื่อมต่อ Google Sheets — บันทึกอัตโนมัติ'
+        : '🔴 ออฟไลน์ — แสดงข้อมูลจากไฟล์ (การแก้จะไม่ถูกบันทึก)';
+      note.classList.toggle('dirty', !online);
+      if (resetBtn) resetBtn.textContent = '↺ รีเฟรชจาก Sheets';
+    } else {
+      const n = Object.keys(loadOverrides()).length;
+      if (n > 0) {
+        note.textContent = `● มีการเปลี่ยนแปลง ${n} รายการ — บันทึกในเบราว์เซอร์นี้`;
+        note.classList.add('dirty');
+      } else {
+        note.textContent = 'ตรงกับไฟล์ tasks.js';
+        note.classList.remove('dirty');
+      }
+      if (resetBtn) resetBtn.textContent = '↺ ล้างการเปลี่ยนแปลง';
+    }
+  }
+
+  function render() {
+    renderBoard(tasks);
+    applyFilter(currentFilter);
+    updateSaveNote();
+  }
+
+  function exportTasksJs() {
+    const header =
+`// ============================================================
+//  TA Task Board — Data File
+//  Edit this file to update the website.
+//  Fields: id, title, category, status, type, due_date, time, location, description
+// ============================================================
+
+`;
+    const body = 'const TASKS = ' + JSON.stringify(tasks, null, 2) + ';\n';
+    const blob = new Blob([header + body], { type: 'text/javascript' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'tasks.js';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  function resetChanges() {
+    if (API_URL) { loadTasks(); return; }   // โหมดออนไลน์ = รีเฟรชจาก Sheets
+    if (!confirm('ล้างการเปลี่ยนแปลงสถานะทั้งหมดในเบราว์เซอร์นี้ และกลับไปใช้ค่าจากไฟล์ tasks.js?')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    tasks = fromFile();
+    render();
+  }
+
+  loadTasks();
+  if (API_URL) setInterval(() => { if (!writing) loadTasks(); }, AUTO_REFRESH_MS);
+</script>
+</body>
+</html>

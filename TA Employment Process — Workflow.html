@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TA Employment Process — Workflow</title>
+<style>
+  :root{
+    --bg:#0f1117; --panel:#161a24; --panel2:#1d2330; --line:#2c3444;
+    --ink:#e8ecf4; --muted:#9aa6bd; --faint:#6b7790;
+    --admin:#4f8cff; --instr:#22c1a0; --applicant:#f5a623; --service:#b07cff;
+    --school:#ff5d8f; --finance:#39c0ed; --system:#ffd23f;
+    --good:#2ec26b; --warn:#ff7849;
+    --r:14px; --shadow:0 6px 22px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans Thai",Arial,sans-serif;
+    line-height:1.5;padding:32px 20px 80px}
+  .wrap{max-width:1080px;margin:0 auto}
+  header.top{margin-bottom:28px}
+  h1{font-size:26px;margin:0 0 6px;letter-spacing:.2px}
+  .sub{color:var(--muted);font-size:14px}
+  .legend{display:flex;flex-wrap:wrap;gap:10px 16px;margin:18px 0 6px;padding:14px 16px;
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}
+  .legend b{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);
+    width:100%;margin-bottom:2px}
+  .chip{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted)}
+  .dot{width:11px;height:11px;border-radius:50%;flex:none}
+  .d-admin{background:var(--admin)} .d-instr{background:var(--instr)}
+  .d-app{background:var(--applicant)} .d-serv{background:var(--service)}
+  .d-school{background:var(--school)} .d-fin{background:var(--finance)}
+  .d-sys{background:var(--system)}
+
+  .flow{position:relative;margin-top:14px}
+  .flow::before{content:"";position:absolute;left:26px;top:14px;bottom:40px;width:3px;
+    background:linear-gradient(var(--admin),var(--instr),var(--applicant),var(--school),var(--finance));
+    border-radius:3px;opacity:.5}
+
+  .stage{position:relative;padding-left:64px;margin-bottom:26px}
+  .num{position:absolute;left:0;top:0;width:54px;height:54px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:22px;
+    background:var(--panel2);border:3px solid var(--admin);color:#fff;z-index:2;box-shadow:var(--shadow)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+    box-shadow:var(--shadow);overflow:hidden}
+  .card>summary{list-style:none;cursor:pointer;padding:16px 18px;display:flex;
+    align-items:flex-start;gap:14px;flex-wrap:wrap}
+  .card>summary::-webkit-details-marker{display:none}
+  .stitle{flex:1;min-width:220px}
+  .stitle h2{margin:0;font-size:18px}
+  .stitle .th{color:var(--muted);font-size:13px;margin-top:2px}
+  .meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .badge{font-size:11px;padding:4px 9px;border-radius:999px;border:1px solid var(--line);
+    color:var(--muted);background:var(--panel2);white-space:nowrap}
+  .badge.freq{border-color:#3a4a6b;color:#9db8ff}
+  .chev{color:var(--faint);font-size:13px;align-self:center;transition:.2s}
+  details[open] .chev{transform:rotate(90deg)}
+  .body{padding:2px 18px 18px;border-top:1px solid var(--line);margin-top:2px}
+  .body h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);
+    margin:16px 0 8px}
+
+  .sub-list{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+  .step{display:flex;gap:12px;align-items:flex-start;padding:11px 13px;
+    background:var(--panel2);border:1px solid var(--line);border-radius:10px;border-left-width:4px}
+  .step .k{font-size:12px;font-weight:700;color:var(--faint);flex:none;width:20px;text-align:center;margin-top:1px}
+  .step .t{font-size:14px}
+  .step .t small{display:block;color:var(--muted);font-size:12.5px;margin-top:3px}
+  .ow-admin{border-left-color:var(--admin)} .ow-instr{border-left-color:var(--instr)}
+  .ow-app{border-left-color:var(--applicant)} .ow-serv{border-left-color:var(--service)}
+  .ow-school{border-left-color:var(--school)} .ow-fin{border-left-color:var(--finance)}
+
+  .tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;
+    padding:2px 7px;border-radius:6px;margin-right:6px;vertical-align:middle}
+  .tag.ems{background:rgba(255,210,63,.16);color:var(--system);border:1px solid rgba(255,210,63,.3)}
+  .tag.fb{background:rgba(79,140,255,.16);color:#7fa8ff;border:1px solid rgba(79,140,255,.3)}
+  .tag.line{background:rgba(46,194,107,.16);color:#5fd98f;border:1px solid rgba(46,194,107,.3)}
+
+  .decision{margin:12px 0;padding:13px 15px;border:1px dashed var(--warn);border-radius:10px;
+    background:rgba(255,120,73,.07)}
+  .decision .q{font-weight:700;color:#ffb293;font-size:13.5px;margin-bottom:8px;
+    display:flex;align-items:center;gap:8px}
+  .branch{display:grid;gap:7px}
+  .branch div{font-size:13px;color:var(--muted);padding-left:18px;position:relative}
+  .branch div::before{content:"→";position:absolute;left:0;color:var(--warn)}
+  .branch b{color:var(--ink)}
+
+  a{color:#7fa8ff}
+  .note{font-size:12.5px;color:var(--muted);margin-top:10px;padding:10px 13px;
+    background:rgba(255,210,63,.06);border:1px solid rgba(255,210,63,.18);border-radius:9px}
+  .note b{color:var(--system)}
+  table.mini{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px}
+  table.mini td,table.mini th{border:1px solid var(--line);padding:6px 9px;text-align:left}
+  table.mini th{background:var(--panel2);color:var(--muted);font-weight:600}
+  .ctrls{display:flex;gap:10px;margin:6px 0 0}
+  .btn{font:inherit;font-size:12.5px;cursor:pointer;color:var(--muted);background:var(--panel2);
+    border:1px solid var(--line);border-radius:8px;padding:6px 12px}
+  .btn:hover{color:var(--ink);border-color:var(--admin)}
+  footer{color:var(--faint);font-size:12px;margin-top:30px;text-align:center}
+  .out{display:inline-block;font-size:12px;color:var(--good);margin-top:8px}
+  .out b{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>Teaching Assistant Employment Process</h1>
+    <div class="sub">College of Arts, Media &amp; Technology (CAMT), Chiang Mai University · Per-semester workflow · Source: TA Employment Knowledge Base</div>
+
+    <div class="legend">
+      <b>Responsible parties</b>
+      <span class="chip"><span class="dot d-admin"></span>TA Admin Staff</span>
+      <span class="chip"><span class="dot d-instr"></span>Instructor</span>
+      <span class="chip"><span class="dot d-app"></span>TA Applicant</span>
+      <span class="chip"><span class="dot d-serv"></span>Academic Service Staff (เจ้าหน้าที่สาขา)</span>
+      <span class="chip"><span class="dot d-school"></span>สำนักวิชา / Program Chair</span>
+      <span class="chip"><span class="dot d-fin"></span>Finance Staff</span>
+    </div>
+    <div class="legend" style="margin-top:8px">
+      <b>System touchpoints</b>
+      <span class="chip"><span class="tag ems">EMS</span>Education Management System</span>
+      <span class="chip"><span class="tag fb">FB</span>CAMT TA Facebook page</span>
+      <span class="chip"><span class="tag line">LINE</span>Semester Line group / Line OA</span>
+    </div>
+    <div class="ctrls">
+      <button class="btn" onclick="document.querySelectorAll('details.card').forEach(d=>d.open=true)">Expand all</button>
+      <button class="btn" onclick="document.querySelectorAll('details.card').forEach(d=>d.open=false)">Collapse all</button>
+    </div>
+  </header>
+
+  <div class="flow">
+
+    <!-- STEP 1 -->
+    <section class="stage">
+      <div class="num" style="border-color:var(--admin)">1</div>
+      <details class="card" open>
+        <summary>
+          <div class="stitle">
+            <h2>Budget Planning</h2>
+            <div class="th">วางแผนงบประมาณ</div>
+          </div>
+          <div class="meta">
+            <span class="badge freq">Once per year</span>
+            <span class="badge">Aug–Sep · submit before Oct</span>
+            <span class="chev">▶</span>
+          </div>
+        </summary>
+        <div class="body">
+          <p style="font-size:13.5px;color:var(--muted);margin:12px 0 0">
+            Estimate total expected TA cost for the three upcoming semesters
+            (Sem 2 current year, Summer current year, Sem 1 next year), aligned with the
+            Thai government fiscal year deadline.</p>
+          <h3>Sub-steps</h3>
+          <ul class="sub-list">
+            <li class="step ow-serv"><span class="k">a</span><span class="t">Collect draft timetable files (.xlsx) from each major's <b>Academic Service Staff</b>.<small>One file per major per semester; encourage them to include ยอดผู้ช่วยสอน (TA quota) data — done inconsistently, reminded each semester.</small></span></li>
+            <li class="step ow-admin"><span class="k">b</span><span class="t"><b>TA Admin</b> reviews historical TA assignment data (past 3–4 years).</span></li>
+            <li class="step ow-admin"><span class="k">c</span><span class="t">List expected opening courses at the <b>section level</b> for each covered semester.</span></li>
+            <li class="step ow-admin"><span class="k">d</span><span class="t">For each section determine expected TA positions (type, hours, weeks).</span></li>
+            <li class="step ow-admin"><span class="k">e</span><span class="t">Calculate cost per position: <code>weeks × hours/week × hourly rate</code>; aggregate section → course → major → grand total.</span></li>
+            <li class="step ow-fin"><span class="k">f</span><span class="t">Submit completed budget plan to <b>Finance Staff</b> before October.</span></li>
+          </ul>
+          <div class="out">Output: ▸ <b>Budget plan</b> — expected positions &amp; costs per major + grand total</div>
+        </div>
+      </details>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="stage">
+      <div class="num" style="border-color:var(--instr)">2</div>
+      <details class="card" open>
+        <summary>
+          <div class="stitle">
+            <h2>TA Quota Inquiry</h2>
+            <div class="th">สอบถามยอดผู้ช่วยสอน</div>
+          </div>
+          <div class="meta">
+            <span class="badge freq">Per semester</span>
+            <span class="badge">~2 months before start</span>
+            <span class="badge"><span class="tag ems">EMS</span></span>
+            <span class="chev">▶</span>
+          </div>
+        </summary>
+        <div class="body">
+          <p style="font-size:13.5px;color:var(--muted);margin:12px 0 0">
+            Confirm which courses actually need a TA and how many, via EMS
+            (<code>ems-admin.camt.cmu.ac.th</code>).</p>
+
+          <h3>Phase 1 — Data input (TA Admin)</h3>
+          <ul class="sub-list">
+            <li class="step ow-admin"><span class="k">a</span><span class="t"><span class="tag ems">EMS</span>Enter each expected position from the budget plan as a row under the current semester.<small>Multi-TA sections use suffixes — e.g. section <code>001-1</code>, <code>001-2</code>.</small></span></li>
+            <li class="step ow-admin"><span class="k">b</span><span class="t">Open the system for instructors to review.</span></li>
+          </ul>
+
+          <h3>Phase 2 — TA type selection (Instructor)</h3>
+          <div class="decision">
+            <div class="q">⟳ Is the section already in the EMS table?</div>
+            <div class="branch">
+              <div><b>Yes</b> → pick a TA type in the "โปรดเลือกประเภทผู้ช่วยสอน" dropdown.</div>
+              <div><b>No</b> → click "สร้างการขอใช้ผู้ช่วยสอน" to create the section, then fill the full form.</div>
+            </div>
+          </div>
+
+          <h3>Allocation criteria (by class type &amp; enrollment)</h3>
+          <table class="mini">
+            <tr><th>Lab — enrolled</th><th>TAs</th><th>Lecture*</th><th>TAs</th></tr>
+            <tr><td>≤ 19</td><td>none</td><td>≤ 50</td><td>max 1</td></tr>
+            <tr><td>20–39</td><td>1</td><td>&gt; 50</td><td>max 2</td></tr>
+            <tr><td>40–49</td><td>2</td><td colspan="2" rowspan="2" style="color:var(--muted)">*Lecture must also qualify on teaching format (Active Learning history/grant from TLIC, or documented Active Learning approach).</td></tr>
+            <tr><td>≥ 50</td><td>3 (max)</td></tr>
+          </table>
+
+          <div class="decision">
+            <div class="q">⟳ Does the request need prior approval? (Lecture class, or over standard quota)</div>
+            <div class="branch">
+              <div><b>No</b> → standard request: check enrollment on REG, fill EMS form. Done.</div>
+              <div><b>Yes</b> → instructor writes a <b>memo (บันทึกข้อความ)</b> per course → gets <span style="color:#ff8fb0">Program Chair</span> co-signature via Academic Service Staff → submits via Google Form → <b>TA Admin</b> forwards to <span style="color:#ff8fb0">สำนักวิชา</span> → awaits outcome.</div>
+            </div>
+          </div>
+
+          <div class="note"><b>⚠ EMS quirk:</b> the dropdown has no "Master Student Assistant (Intl)" — those are recorded as <b>Graduate Assistant (International)</b>. Same 300 THB/hr rate, but a different appointment path (see Step 4).</div>
+          <div class="out">Output: ▸ <b>Confirmed positions per section</b> with chosen TA type</div>
+        </div>
+      </details>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="stage">
+      <div class="num" style="border-color:var(--applicant)">3</div>
+      <details class="card" open>
+        <summary>
+          <div class="stitle">
+            <h2>Recruitment &amp; Application</h2>
+            <div class="th">รับสมัครผู้ช่วยสอน</div>
+          </div>
+          <div class="meta">
+            <span class="badge freq">Per semester</span>
+            <span class="badge">≥ 1 month before start</span>
+            <span class="badge"><span class="tag fb">FB</span><span class="tag ems">EMS</span></span>
+            <span class="chev">▶</span>
+          </div>
+        </summary>
+        <div class="body">
+          <h3>Phase 1 — Announce &amp; apply</h3>
+          <ul class="sub-list">
+            <li class="step ow-admin"><span class="k">a</span><span class="t"><span class="tag fb">FB</span><b>TA Admin</b> posts the bilingual recruitment announcement (open / deadline / results dates).</span></li>
+            <li class="step ow-app"><span class="k">b</span><span class="t"><span class="tag ems">EMS</span><b>Applicants</b> apply at <code>ems-admin.camt.cmu.ac.th/taExternal/login</code> and upload required documents.<small>Bachelor: app form, transcript, ID/passport, bank book. Grad/Lab Head/Master: CV, transcript, graduation/degree cert, ID/passport, bank book. (CAMT Staff exempt.)</small></span></li>
+          </ul>
+
+          <h3>Phase 2 — Instructor review (~1 week after post)</h3>
+          <div class="decision">
+            <div class="q">⟳ Instructor decision on each application</div>
+            <div class="branch">
+              <div><b>Accept</b> → approve as TA for the position.</div>
+              <div><b>Reject</b> → decline the applicant.</div>
+              <div><b>Move</b> → reassign the application to another section.</div>
+            </div>
+          </div>
+
+          <h3>Phase 3 — Results &amp; report-in</h3>
+          <ul class="sub-list">
+            <li class="step ow-admin"><span class="k">a</span><span class="t"><span class="tag fb">FB</span><b>TA Admin</b> posts selection results (bilingual, may be multiple rounds).</span></li>
+            <li class="step ow-app"><span class="k">b</span><span class="t"><span class="tag fb">FB</span>Selected <b>TA reports in</b>: name, confirmed courses (CourseID Sec), status in semester; contacts the instructor for schedule/room.</span></li>
+            <li class="step ow-admin"><span class="k">c</span><span class="t"><span class="tag line">LINE</span><b>TA Admin</b> replies — TA joins the semester Line group for payment-round updates (Line OA for private contact).</span></li>
+          </ul>
+          <div class="out">Output: ▸ <b>Selected TAs</b> confirmed &amp; reported in</div>
+        </div>
+      </details>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="stage">
+      <div class="num" style="border-color:var(--school)">4</div>
+      <details class="card" open>
+        <summary>
+          <div class="stitle">
+            <h2>TA Appointment</h2>
+            <div class="th">แต่งตั้งผู้ช่วยสอน</div>
+          </div>
+          <div class="meta">
+            <span class="badge freq">Per semester</span>
+            <span class="badge">Path differs by TA type</span>
+            <span class="chev">▶</span>
+          </div>
+        </summary>
+        <div class="body">
+          <p style="font-size:13.5px;color:var(--muted);margin:12px 0 0">The appointment route depends on the TA type group.</p>
+          <div class="decision">
+            <div class="q">⟳ Which TA type?</div>
+            <div class="branch">
+              <div><b>Graduate Assistant (Thai &amp; Intl)</b> → employed via <b>จ้างเหมา (contract)</b> — needs: TOR (Terms of Reference), ใบเสนอราคา (quotation), and the application documents from Step 3.</div>
+              <div><b>Master Student Assistant (Intl)</b> → <b>separate appointment process</b> (new university rule; distinct from the Graduate จ้างเหมา flow). <i>Details TBD in KB.</i></div>
+              <div><b>Bachelor Student Assistant · Lab Head · CAMT Staff</b> → appointment process <i>to be documented in KB.</i></div>
+            </div>
+          </div>
+          <div class="out">Output: ▸ <b>Appointed TAs</b> with employment documents in place</div>
+        </div>
+      </details>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="stage">
+      <div class="num" style="border-color:var(--finance)">5</div>
+      <details class="card" open>
+        <summary>
+          <div class="stitle">
+            <h2>Disbursement &amp; Payment</h2>
+            <div class="th">เบิกจ่าย</div>
+          </div>
+          <div class="meta">
+            <span class="badge freq">Per semester (after work)</span>
+            <span class="badge"><span class="tag line">LINE</span> payment rounds</span>
+            <span class="chev">▶</span>
+          </div>
+        </summary>
+        <div class="body">
+          <h3>Sub-steps</h3>
+          <ul class="sub-list">
+            <li class="step ow-instr"><span class="k">a</span><span class="t">Record <b>actual weeks assisted</b> per TA per class (≤ 15 weeks/semester; holidays/cancellations excluded).</span></li>
+            <li class="step ow-admin"><span class="k">b</span><span class="t">Compute pay per assignment: <code>weeks × hours/week × hourly rate</code>; sum across classes if a TA assists several.</span></li>
+            <li class="step ow-fin"><span class="k">c</span><span class="t"><b>Finance Staff</b> processes disbursement; <span class="tag line">LINE</span> payment rounds announced in the semester Line group.</span></li>
+          </ul>
+          <table class="mini">
+            <tr><th>TA type</th><th>THB/hr</th><th>TA type</th><th>THB/hr</th></tr>
+            <tr><td>Graduate Asst (Thai)</td><td>200</td><td>Bachelor Asst (Intl)</td><td>120</td></tr>
+            <tr><td>Graduate Asst (Intl)</td><td>300</td><td>Master Student Asst (Intl)</td><td>300</td></tr>
+            <tr><td>Bachelor Asst (Thai)</td><td>90</td><td>Lab Head</td><td>450</td></tr>
+            <tr><td colspan="2"></td><td>CAMT Staff</td><td>0</td></tr>
+          </table>
+          <div class="out">Output: ▸ <b>TAs paid</b> · actual wage recorded in EMS, flagged if it exceeds estimate</div>
+        </div>
+      </details>
+    </section>
+
+  </div>
+
+  <footer>Generated from the TA Employment Knowledge Base (last updated 2026-06-10). Sub-step ownership shown by the colored left border on each row.</footer>
+</div>
+</body>
+</html>

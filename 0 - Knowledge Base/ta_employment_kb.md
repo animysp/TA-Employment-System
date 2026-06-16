@@ -2,7 +2,7 @@
 **College of Arts, Media, and Technology (CAMT), Chiang Mai University**
 
 > **Maintained by:** Claude (Cowork Mode)
-> **Last updated:** 2026-05-28 (added TA allocation criteria, Active Learning definitions, and detailed special case documents from แนวทางปฏิบัติ TA)
+> **Last updated:** 2026-06-14 (added Step 4 full appointment process; added Step 5 disbursement process for all three TA groups)
 > **Purpose:** Single source of truth for all policies, procedures, conditions, and requirements related to the TA employment process.
 
 ---
@@ -465,8 +465,73 @@ Each instructor can take one of three actions on each application:
 | **Reject** | Decline the applicant |
 | **Move to another section** | Reassign the applicant's application to a different section |
 
+### Phase 3 — Results Announcement
+
+After instructors complete their reviews, TA Admin Staff posts the selection results on the Facebook page. The post is bilingual (Thai + English) and may be posted in multiple rounds (e.g., รอบที่ 1, รอบที่ 2).
+
+> **Placeholder:** `[SEMESTER]` — semester label, e.g., `1/69`
+
+```
+ประกาศรายชื่อผู้ผ่านการคัดเลือกผู้ช่วยสอน [SEMESTER] (รอบที่ 1)
+ให้ผู้ผ่านการคัดเลือกดำเนินการดังต่อไปนี้
+1. รายงานตัวเพื่อยืนยันการรับงาน และนัดหมายทำเอกสารจ้าง ผ่านข้อความทาง: https://www.facebook.com/camt.ta
+ข้อมูลที่ใช้รายงานตัว
+-----(1) ชื่อ-นามสกุล
+-----(2) วิชาที่ยืนยันช่วยสอน (CourseID Sec No.)
+-----(3) สถานะในเทอม [SEMESTER] (สำเร็จการศึกษาแล้ว / นักศึกษาบัณฑิต มช / นักศึกษา ป.ตรี มช)
+2. ติดต่ออาจารย์เจ้าของวิชาเพื่อยืนยันวันเวลาและห้องเรียน
+----- ยังไม่มีช่องทางติดต่อ? แจ้งแอดมินพร้อมการรายงานตัว
+-----------------------------------------------------------------
+TA Selection Result [SEMESTER] (Round 1)
+For those who have been selected, please proceed with the following steps:
+1. Report in to confirm your acceptance and schedule employment documents
+via inbox: https://www.facebook.com/camt.ta
+Include:
+-----(1) Full name
+-----(2) Confirmed courses (CourseID Sec No.)
+-----(3) Status in semester [SEMESTER] (Graduated / CMU graduate student / CMU undergraduate)
+2. Contact your instructor to confirm the teaching schedule and room.
+----- No contact info? Let us know when you report in.
+```
+
+### Admin Response to Report-in
+
+After a selected TA sends a report-in message to the Facebook page, TA Admin Staff replies with the following template. The Line group link changes each semester.
+
+> **Placeholder:** `[LINE_GROUP_LINK]` — Line group invite link for the current semester
+
+**Thai:**
+```
+รับทราบค่ะ 🎉
+
+ขอให้ผู้ช่วยสอนดำเนินการดังนี้
+1. เข้าไลน์กลุ่มของเทอมนี้ สำหรับรับแจ้งข้อมูลสำคัญ เช่น รอบการส่งเบิก
+[LINE_GROUP_LINK]
+----- เมื่อเข้ากลุ่มแล้ว ขอแจ้ง ชื่อ รหัสวิชา Section (+ รหัสนักศึกษา กรณีเป็นนักศึกษา)
+2. ตรวจสอบวันเวลาและห้องเรียนกับอาจารย์ผู้สอน หรือทาง REG
+3. หากต้องการติดต่อส่วนตัว นอกจากทาง Facebook สามารถแอด Line OA: https://lin.ee/PFAtQSE
+
+ตอนนี้ผู้ช่วยสอนมีช่องทางติดต่ออาจารย์แล้วรึยังคะ
+```
+
+**English:**
+```
+Noted! 🎉
+
+Please proceed with the following:
+1. Join this semester's Line group for important updates, such as payment submission schedules.
+[LINE_GROUP_LINK]
+----- Once you've joined, please share your name, Course ID, Section (+ student ID if you are a student)
+2. Confirm the teaching schedule and room with your instructor, or check via REG.
+3. For private inquiries, in addition to Facebook, you can also add our Line OA: https://lin.ee/PFAtQSE
+
+Do you have the instructor's contact information yet?
+```
+
+---
+
 ### Responsible Parties
-- **TA Admin Staff** — prepares and posts the announcement on Facebook; manages the EMS recruitment portal; notifies instructors to review applications after ~1 week
+- **TA Admin Staff** — prepares and posts the announcement on Facebook; manages the EMS recruitment portal; notifies instructors to review applications after ~1 week; posts results announcement; responds to TA report-in messages
 - **Instructor** — reviews applicants and responds with accept, reject, or move to another section
 
 ---
@@ -479,23 +544,41 @@ The appointment process differs by TA type group.
 
 ### Graduate Assistant (Thai & International Program)
 
-Graduate Assistants are employed through a **จ้างเหมา (contract/outsourcing)** process. The required documents for this process are:
+Graduate Assistants are employed through a **จ้างเหมา (contract/outsourcing)** process via the **One Stop Service** system.
 
-1. **TOR (Terms of Reference)** — scope of work document prepared for the position
-2. **ใบเสนอราคา** — Quotation document
-3. **เอกสารที่ใช้สมัคร** — Application documents submitted by the applicant during Step 3 (see [Required Documents for Application](#required-documents-for-application))
+| Step | Action | Details |
+|:----:|--------|---------|
+| 1 | **Create TOR in One Stop Service** | Prepare and submit the Terms of Reference (TOR) into the One Stop Service system |
+| 2 | **Wait for verification and signature** | พัสดุ (Procurement) verifies the TOR; สำนักวิชา signs off |
+| 3 | **TA signs quotation & submits ID copy** | Schedule the TA to sign the **ใบเสนอราคา** (quotation) and submit a copy of their ID card for the employment document package |
+| 4 | **TA signs work order** | Notify the TA to come in and sign the **ใบสั่งจ้าง** (work order / employment order) |
+
+> **Documents involved:** TOR, ใบเสนอราคา, สำเนาบัตรประชาชน, ใบสั่งจ้าง, and application documents from Step 3.
 
 ---
 
 ### Master Student Assistant (International Program)
 
-Master Student Assistants are appointed through a **separate process** distinct from the Graduate Assistant จ้างเหมา flow. *(Process details to be added.)*
+Master Student Assistants go through a formal **แต่งตั้ง (appointment)** process with Dean-signed announcements — distinct from the Graduate Assistant จ้างเหมา flow.
 
-> **Note:** This separation is due to a new university rule effective from a recent past semester. Previously, Master Student Assistants were employed under the same Graduate Assistant flow. See [Special Case: Master Student Assistant](#special-case-master-student-assistant-international-program) for background.
+| Step | Action | Details |
+|:----:|--------|---------|
+| 1 | **Prepare recruitment announcement** | Create **ประกาศรับสมัครนักศึกษาทุนผู้ช่วยสอนระดับบัณฑิต** with **ใบเสนองาน** (job proposal) for the Dean (คณบดี) to sign. Date the announcement the same as the application open date. Must be done before the appointment step. |
+| 2 | **Announce selected TAs** | Create **ประกาศรายชื่อนักศึกษาทุนผู้ช่วยสอนระดับบัณฑิต** (Round 1) with **ใบเสนองาน** for the Dean to sign. Post no more than **1 week before the semester starts**. |
+
+> **Note:** This process is due to a new university rule effective from a recent past semester. Previously, Master Student Assistants were employed under the Graduate Assistant flow. See [Special Case: Master Student Assistant](#special-case-master-student-assistant-international-program) for background.
 
 ---
 
-### Bachelor Student Assistant, Lab Head, CAMT Staff
+### Bachelor Student Assistant
+
+| Step | Action | Details |
+|:----:|--------|---------|
+| 1 | **Submit name list to กิจการนักศึกษา** | Send the list of selected Bachelor Student Assistants to **พี่แบงค์** (กิจการนักศึกษา), who handles undergraduate scholarship student administration. |
+
+---
+
+### Lab Head / CAMT Staff
 
 *(Appointment process details to be added.)*
 
@@ -545,6 +628,60 @@ Payment = weeks_assisted × hours_per_week × hourly_rate
 
 **Multiple class assignments:**
 - If a TA assists more than one class, payment is calculated per class and summed.
+
+---
+
+### Disbursement Process (กระบวนการส่งเบิก)
+
+The disbursement process differs by TA type group. All groups follow a **monthly submission cycle**, but the disbursement (เบิก) frequency varies.
+
+#### Common Deadline Rules (ใช้กับทุกกลุ่ม)
+
+| Situation | Announcement Deadline | Document Submission Deadline |
+|-----------|----------------------|------------------------------|
+| Regular months | 1 week before end of month | Last working day of the month |
+| Last month of teaching | 1 week before last teaching day | Last teaching day of the semester |
+
+---
+
+#### Graduate Assistant (จ้างเหมา) — ส่งรายเดือน / เบิกรายเทอม
+
+| Step | Action |
+|:----:|--------|
+| 1 | **ประกาศ** ให้ TA ส่งใบลงเวลาทำงาน ตามกำหนดเวลาข้างต้น |
+| 2 | **ปิดรับเอกสาร** ตามกำหนดเวลาข้างต้น |
+| 3 | **รวมเอกสารส่งพัสดุ** เพื่อตรวจสอบ และเสนอสำนักวิชาและคณบดีลงนาม |
+| 4 | **รับเอกสารกลับจากพัสดุ** และรวบรวมไว้ |
+| 5 | **ในเดือนสุดท้าย** — รวบรวมเอกสารทั้งหมดส่งพัสดุพร้อมเอกสารแนบ |
+
+**เอกสารแนบสำหรับเดือนสุดท้าย (Graduate Assistant):**
+1. สำเนาบัตรประชาชน
+2. ใบวางบิล
+3. บันทึกข้อความแนบท้าย — กรณีที่เบิกไม่เต็มจำนวน
+
+> เบิกรายเทอม: เอกสารทุกเดือนรวบรวมและส่งเบิกพร้อมกันในเดือนสุดท้ายของการสอน
+
+---
+
+#### Master Student Assistant — ส่งรายเดือน / เบิกรายเดือน
+
+| Step | Action |
+|:----:|--------|
+| 1 | **ประกาศ** ให้ TA ส่งใบลงเวลาทำงาน พร้อมแนบสำเนาบัตรประชาชน ตามกำหนดเวลาข้างต้น |
+| 2 | **ปิดรับเอกสาร** ตามกำหนดเวลาข้างต้น |
+| 3 | **ทำใบขวาง** สรุปยอดเงิน |
+| 4 | **รวบรวมเอกสารส่ง** เจ้าหน้าที่สำนัก **(ปูน)** |
+
+---
+
+#### Bachelor Student Assistant — ส่งรายเดือน / เบิกรายเดือน
+
+| Step | Action |
+|:----:|--------|
+| 1 | **ประกาศ** ให้ TA ส่งใบลงเวลาทำงาน พร้อมแนบสำเนาบัตรประชาชน ตามกำหนดเวลาข้างต้น |
+| 2 | **ปิดรับเอกสาร** ตามกำหนดเวลาข้างต้น |
+| 3 | **ทำใบขวาง** สรุปยอดเงิน |
+| 4 | **รวบรวมเอกสารส่ง** เจ้าหน้าที่กิจการนักศึกษา **(พี่แบงค์)** |
 
 ---
 

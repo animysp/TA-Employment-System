@@ -135,4 +135,59 @@ const TASKS = [
     location: "",
     description: "Reformat the expense reimbursement document to landscape (horizontal) orientation."
   },
+  {
+    id: 16,
+    title: "รวมเอกสารหน้าบัญชีกลุ่มนักศึกษาบัณฑิต รอบ 68/2 ส่งการเงิน",
+    category: "Employment Process",
+    status: "todo",
+    type: "task",
+    due_date: "2026-06-15",
+    time: "",
+    location: "",
+    description: "รวมเอกสารหน้าบัญชีกลุ่มนักศึกษาบัณฑิต รอบ 68/2 ส่งให้ฝ่ายการเงิน (พี่แอ้)"
+  },
+  {
+    id: 15,
+    title: "ส่งเบิก บัณฑิต รอบ Summer-68",
+    category: "Employment Process",
+    status: "todo",
+    type: "task",
+    due_date: "2026-06-16",
+    time: "",
+    location: "",
+    description: "ส่งเอกสารเบิกเงิน TA บัณฑิต รอบ Summer ภาคการศึกษา 68"
+  },
+  {
+    id: 14,
+    title: "ส่งใบเสนอราคาให้พัสดุ",
+    category: "Employment Process",
+    status: "todo",
+    type: "task",
+    due_date: "2026-06-16",
+    time: "",
+    location: "",
+    description: "ส่งเอกสารใบเสนอราคาให้ฝ่ายพัสดุ ⚠️ อย่าลืมแปะอากรแสตมป์ก่อนส่ง"
+  },
+  {
+    id: 13,
+    title: "สอบถามการเงินเรื่องสถานะเอกสารกลุ่มที่ส่งวันที่ 15 พ.ค. 2569",
+    category: "Employment Process",
+    status: "todo",
+    type: "task",
+    due_date: "2026-06-16",
+    time: "",
+    location: "",
+    description: "ติดตามสถานะเอกสารกลุ่มที่ส่งให้ฝ่ายการเงินเมื่อวันที่ 15 พฤษภาคม 2569"
+  },
+  {
+    id: 12,
+    title: "เสนอเซ็นประกาศรายชื่อ TA บัณฑิต",
+    category: "Employment Process",
+    status: "todo",
+    type: "task",
+    due_date: "2026-06-17",
+    time: "",
+    location: "",
+    description: "เสนอเซ็นประกาศรายชื่อทุน TA บัณฑิต ภาคการศึกษา 69-1 รอรหัสนักศึกษาของ เตชณัฐ ไฟล์: ประกาศรายชื่อทุน TA บัณฑิต_with ใบเสนองาน - 69 - 1.docx"
+  },
 ];

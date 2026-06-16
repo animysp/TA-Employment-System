@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOR จ้างเหมาผู้ช่วยสอน — Template กรอกระบบ Onestop (2026.2)</title>
+<style>
+  :root{
+    --sel:#f59e0b; --sel-bg:#fff7ed; --sel-bd:#fed7aa;
+    --copy:#2563eb; --copy-bg:#eff6ff; --copy-bd:#bfdbfe;
+    --edit:#16a34a; --edit-bg:#f0fdf4; --edit-bd:#bbf7d0;
+    --ink:#1f2937; --muted:#6b7280; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{
+    font-family:"Sarabun","Segoe UI",Tahoma,sans-serif;
+    color:var(--ink); background:#f8fafc; margin:0; padding:24px 16px;
+    line-height:1.7;
+  }
+  .wrap{max-width:880px; margin:0 auto}
+  h1{font-size:22px; margin:0 0 4px}
+  .sub{color:var(--muted); margin:0 0 20px; font-size:14px}
+  .legend{
+    display:flex; flex-wrap:wrap; gap:10px; background:#fff;
+    border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin-bottom:24px;
+  }
+  .legend div{font-size:13px; display:flex; align-items:center; gap:8px}
+  .dot{width:14px; height:14px; border-radius:4px; display:inline-block}
+  .d-sel{background:var(--sel)} .d-copy{background:var(--copy)} .d-edit{background:var(--edit)}
+  .field{
+    background:#fff; border:1px solid var(--line); border-radius:12px;
+    padding:14px 16px; margin-bottom:14px;
+  }
+  .label{font-weight:600; font-size:14px; margin-bottom:8px; display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+  .badge{font-size:11px; font-weight:600; padding:2px 8px; border-radius:999px; white-space:nowrap}
+  .b-sel{color:var(--sel); background:var(--sel-bg); border:1px solid var(--sel-bd)}
+  .b-copy{color:var(--copy); background:var(--copy-bg); border:1px solid var(--copy-bd)}
+  .b-edit{color:var(--edit); background:var(--edit-bg); border:1px solid var(--edit-bd)}
+  .sectionhead{
+    font-size:16px; font-weight:700; margin:28px 0 12px; padding-bottom:6px;
+    border-bottom:2px solid var(--line);
+  }
+  /* select value */
+  .selval{
+    background:var(--sel-bg); border:1px solid var(--sel-bd); border-radius:8px;
+    padding:8px 12px; font-weight:600; color:#b45309;
+  }
+  /* copy block */
+  .copybox{position:relative; background:var(--copy-bg); border:1px solid var(--copy-bd); border-radius:8px; padding:12px 14px}
+  .copytext{white-space:pre-wrap; font-size:14px}
+  .copybtn{
+    margin-top:10px; background:var(--copy); color:#fff; border:none; border-radius:8px;
+    padding:7px 16px; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit;
+  }
+  .copybtn:hover{filter:brightness(.93)}
+  .copybtn.done{background:var(--edit)}
+  /* inline editable inside copy block */
+  .inl{
+    border:none; border-bottom:2px dashed var(--edit); background:var(--edit-bg);
+    font:inherit; color:#15803d; font-weight:600; padding:0 4px; min-width:60px;
+    text-align:center;
+  }
+  .inl:focus{outline:none; background:#dcfce7}
+  /* standalone edit */
+  .editinput{
+    width:100%; border:1px solid var(--edit-bd); background:var(--edit-bg);
+    border-radius:8px; padding:8px 12px; font:inherit; color:#15803d; font-weight:600;
+  }
+  .editinput:focus{outline:none; border-color:var(--edit)}
+  .note{font-size:12px; color:var(--muted); margin-top:6px}
+  .hint{font-size:12px; color:var(--muted); font-style:italic}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>ร่างข้อมูล TOR จ้างเหมาผู้ช่วยสอน</h1>
+  <p class="sub">สำหรับคัดลอกไปกรอกในระบบ Onestop · Version 2026.2</p>
+
+  <div class="legend">
+    <div><span class="dot d-sel"></span> <b>เลือกในระบบ</b> — กดเลือกตัวเลือก (&lt;&lt; &gt;&gt;)</div>
+    <div><span class="dot d-copy"></span> <b>คัดลอก</b> — กดปุ่มคัดลอกไปวาง ([[ ]])</div>
+    <div><span class="dot d-edit"></span> <b>พิมพ์แก้ไข</b> — กรอก/แก้ก่อนคัดลอก ([ ])</div>
+  </div>
+
+  <!-- ===== ข้อมูลหลัก ===== -->
+  <div class="sectionhead">ข้อมูลทั่วไป</div>
+
+  <div class="field">
+    <div class="label">ปีงบประมาณ <span class="badge b-copy">คัดลอก</span></div>
+    <div class="copybox"><div class="copytext">2569</div><button class="copybtn" onclick="copyBlock(this)">คัดลอก</button></div>
+  </div>
+
+  <div class="field">
+    <div class="label">หน่วยงานที่ว่าจ้าง <span class="badge b-sel">เลือกในระบบ</span></div>
+    <div class="selval">CAMT</div>
+  </div>
+
+  <div class="field">
+    <div class="label">หน่วยงาน <span class="badge b-sel">เลือกในระบบ</span></div>
+    <div class="selval">สำนักวิชา</div>
+  </div>
+
+  <div class="field">
+    <div class="label">ประเภทงานจ้าง <span class="badge b-sel">เลือกในระบบ</span></div>
+    <div class="selval">งานจ้าง</div>
+  </div>
+
+  <div class="field">
+    <div class="label">ชื่องานจ้างเหมา <span class="badge b-copy">คัดลอก</span></div>
+    <div class="copybox"><div class="copytext">ผู้ช่วยสอน</div><button class="copybtn" onclick="copyBlock(this)">คัดลอก</button></div>
+  </div>
+
+  <div class="field">
+    <div class="label">วงเงินงบประมาณ <span class="badge b-edit">พิมพ์แก้ไข</span></div>
+    <input class="editinput" type="text" placeholder="จำนวนเงิน">
+  </div>
+
+  <!-- ===== หลักการและเหตุผล ===== -->
+  <div class="sectionhead">หลักการและเหตุผล / ความเป็นมา</div>
+  <div class="field">
+    <div class="label"><span class="badge b-copy">คัดลอก</span> <span class="hint">แก้ช่องสีเขียวก่อนคัดลอก</span></div>
+    <div class="copybox">
+      <div class="copytext">เนื่องจากในภาคการศึกษาที่ <input class="inl" style="min-width:40px" value="1"> ปีการศึกษา <input class="inl" style="min-width:70px" value="2569"> วิทยาลัยศิลปะ สื่อและเทคโนโลยี มหาวิทยาลัยเชียงใหม่ มีการจัดการเรียนการสอนในรายวิชาต่าง ๆ ในลักษณะชั้นเรียนปฏิบัติการคอมพิวเตอร์ ครอบคลุมด้านการใช้โปรแกรมคอมพิวเตอร์ การเขียนโปรแกรม และการออกแบบดิจิทัล รวมถึงรายวิชาที่มีกิจกรรมการเรียนรู้เชิงปฏิบัติในห้องเรียนซึ่งต้องการการดูแลนักศึกษาอย่างใกล้ชิดเป็นรายบุคคล ส่งผลให้คณาจารย์มีภาระงานสูงในการให้คำแนะนำและดูแลนักศึกษาได้อย่างทั่วถึง เพื่อรักษามาตรฐานคุณภาพการศึกษาและประสิทธิภาพในการจัดการเรียนการสอนให้อยู่ในระดับสูงสุด รวมทั้งเพื่อให้สามารถดูแลและให้คำแนะนำแก่นักศึกษาได้อย่างทั่วถึงและมีประสิทธิผล วิทยาลัยฯ จึงมีความจำเป็นต้องจัดหาบุคลากรสนับสนุนการเรียนการสอนในตำแหน่งผู้ช่วยสอนที่มีคุณวุฒิการศึกษาระดับปริญญาตรีขึ้นไป เพื่อทำหน้าที่สนับสนุนคณาจารย์ในการจัดกิจกรรมการเรียนการสอน การประเมินผลการเรียนรู้ และการพัฒนาศักยภาพของนักศึกษาให้บรรลุผลลัพธ์การเรียนรู้ตามมาตรฐานการศึกษาระดับอุดมศึกษา</div>
+      <button class="copybtn" onclick="copyBlock(this)">คัดลอก</button>
+    </div>
+  </div>
+
+  <!-- ===== วัตถุประสงค์ ===== -->
+  <div class="sectionhead">วัตถุประสงค์ <span class="badge b-copy">คัดลอกทีละข้อ</span></div>
+  <div class="field">
+    <div class="copybox"><div class="copytext">เพื่อแบ่งเบาภาระงานของผู้สอนหลักในด้านการเตรียมการสอน การจัดการชั้นเรียน และการประเมินผลเบื้องต้น</div><button class="copybtn" onclick="copyBlock(this)">คัดลอก</button></div>
+  </div>
+  <div class="field">
+    <div class="copybox"><div class="copytext">เพื่อสนับสนุนการเรียนการสอนให้มีประสิทธิภาพและประสิทธิผลยิ่งขึ้น</div><button class="copybtn" onclick="copyBlock(this)">คัดลอก</button></div>
+  </div>
+  <div class="field">
+    <div class="copybox"><div class="copytext">เพื่อให้นักศึกษาได้รับการดูแล ให้คำปรึกษา และการอำนวยความสะดวกในการเรียนรู้จากผู้ที่มีความรู้ในรายวิชาอย่างใกล้ชิด</div><button class="copybtn" onclick="copyBlock(this)">คัดลอก</button></div>
+  </div>
+  <div class="field">
+    <div class="copybox"><div class="copytext">เพื่อช่วยส่งเสริมให้ผู้เรียนบรรลุผลการเรียนรู้ตามที่กำหนดไว้ในรายวิชา</div><button class="copybtn" onclick="copyBlock(this)">คัดลอก</button></div>
+  </div>
+
+  <!-- ===== คุณสมบัติ ===== -->
+  <div class="sectionhead">คุณสมบัติผู้ยื่นข้อเสนอ (เพิ่มเติม) <span class="badge b-copy">คัดลอกทีละข้อ</span></div>
+  <div class="field">
+    <div class="copybox"><div class="copytext">สำเร็จการศึกษาระดับปริญญาตรีในสาขาวิชาที่เกี่ยวข้องกับรายวิชาที่จะช่วยสอน เช่น ศิลปกรรม การออกแบบ นิเทศศาสตร์ สื่อดิจิทัล แอนิเมชัน ภาพยนตร์ วิทยาการคอมพิวเตอร์ เทคโนโลยีสารสนเทศ หรือสาขาอื่นๆ ที่เกี่ยวข้องกับวิชาที่รับผิดชอบ</div><button class="copybtn" onclick="copyBlock(this)">คัดลอก</button></div>
+  </div>
+  <div class="field">
+    <div class="copybox"><div class="copytext">มีผลการเรียนเฉลี่ยสะสม (GPA) ไม่ต่ำกว่า 2.75</div><button class="copybtn" onclick="copyBlock(this)">คัดลอก</button></div>
+  </div>
+  <div class="field">
+    <div class="copybox"><div class="copytext">มีประสบการณ์ด้านการสอนหรือการเป็นผู้ช่วยสอนอย่างน้อย 6 เดือน (พิจารณาเป็นพิเศษ)</div><button class="copybtn" onclick="copyBlock(this)">คัดลอก</button></div>
+  </div>
+  <div class="field">
+    <div class="copybox"><div class="copytext">มีทักษะการสื่อสารและการถ่ายทอดความรู้ที่ดี</div><button class="copybtn" onclick="copyBlock(this)">คัดลอก</button></div>
+  </div>
+  <div class="field">
+    <div class="copybox"><div class="copytext">สามารถใช้โปรแกรมคอมพิวเตอร์พื้นฐานได้เป็นอย่างดี</div><button class="copybtn" onclick="copyBlock(this)">คัดลอก</button></div>
+  </div>
+
+  <!-- ===== ขอบเขตงาน ===== -->
+  <div class="sectionhead">ขอบเขตงาน</div>
+  <div class="field">
+    <div class="label">1. <span class="badge b-copy">คัดลอก</span> <span class="hint">เลือกใช้ตามจำนวนตอน แล้วแก้รหัสวิชา / ชื่อวิชา / ตอน ก่อนคัดลอก</span></div>
+
+    <div class="note" style="margin-top:4px"><b>กรณี 1 ตอน</b></div>
+    <div class="copybox">
+      <div class="copytext">ผู้ช่วยสอนที่ได้รับการจ้างเหมามีหน้าที่สนับสนุนการเรียนการสอนในรายวิชา <input class="inl" style="min-width:90px" value="000000"> <input class="inl" style="min-width:160px" placeholder="ชื่อวิชาภาษาไทย"> ตอน <input class="inl" style="min-width:50px" value="001"> โดยมีรายละเอียดดังนี้</div>
+      <button class="copybtn" onclick="copyBlock(this)">คัดลอก</button>
+    </div>
+
+    <div class="note" style="margin-top:10px"><b>กรณี 2 ตอน</b></div>
+    <div class="copybox">
+      <div class="copytext">ผู้ช่วยสอนที่ได้รับการจ้างเหมามีหน้าที่สนับสนุนการเรียนการสอนในรายวิชา <input class="inl" style="min-width:90px" value="000000"> <input class="inl" style="min-width:160px" placeholder="ชื่อวิชาภาษาไทย"> ตอน <input class="inl" style="min-width:50px" value="001"> และ <input class="inl" style="min-width:50px" value="002"> โดยมีรายละเอียดดังนี้</div>
+      <button class="copybtn" onclick="copyBlock(this)">คัดลอก</button>
+    </div>
+
+    <div class="note" style="margin-top:10px"><b>กรณี 3 ตอน</b></div>
+    <div class="copybox">
+      <div class="copytext">ผู้ช่วยสอนที่ได้รับการจ้างเหมามีหน้าที่สนับสนุนการเรียนการสอนในรายวิชา <input class="inl" style="min-width:90px" value="000000"> <input class="inl" style="min-width:160px" placeholder="ชื่อวิชาภาษาไทย"> ตอน <input class="inl" style="min-width:50px" value="001">, <input class="inl" style="min-width:50px" value="002"> และ <input class="inl" style="min-width:50px" value="003"> โดยมีรายละเอียดดังนี้</div>
+      <button class="copybtn" onclick="copyBlock(this)">คัดลอก</button>
+    </div>
+  </div>
+  <div class="field" style="margin-left:24px; border-left:3px solid var(--copy-bd)">
+    <div class="label">รายละเอียดขอบเขตงาน (ของข้อ 1) <span class="badge b-copy">คัดลอก</span></div>
+    <div class="copybox">
+      <div class="copytext">งานด้านการสอน
+- ดูแลและให้คำแนะนำนักศึกษาในชั้นเรียนอย่างใกล้ชิด ในส่วนปฏิบัติการ และกิจกรรมต่าง ๆ ในชั้นเรียน
+- ตอบคำถาม อธิบายเนื้อหา สาธิต และช่วยแก้ไขปัญหาให้แก่นักศึกษาระหว่างการเรียนการสอน หรือตามนอกชั้นเรียนความเหมาะสม
+- ช่วยเตรียมสื่อการสอน เอกสาร และอุปกรณ์การเรียนการสอนตามที่อาจารย์ผู้สอนมอบหมาย
+
+งานด้านการประเมินผล
+- ช่วยตรวจงานแบบฝึกหัดและรายงานตามเกณฑ์ที่อาจารย์ผู้สอนกำหนด
+- ช่วยจัดทำและตรวจข้อสอบย่อย (Quiz) ตามเกณฑ์ที่อาจารย์ผู้สอนกำหนด
+- บันทึกและรวบรวมคะแนน โดยมีอาจารย์ผู้สอนเป็นผู้ควบคุมกระบวนการจัดทำผลคะแนนอย่างใกล้ชิด เพื่อให้ได้ผลการประเมินที่ถูกต้องและเป็นธรรม
+- ให้คำแนะนำ ข้อเสนอแนะ (Feedback) เกี่ยวกับผลงานแก่นักศึกษาตามเกณฑ์ที่อาจารย์ผู้สอนกำหนด เพื่อให้นักศึกษานำไปปรับปรุงและพัฒนาต่อไป
+
+งานด้านการบริหารจัดการ
+- ช่วยควบคุม ดูแล ความเรียบร้อยในชั้นเรียน เพื่อให้บรรยากาศการเรียนรู้เหมาะสม
+- ช่วยบันทึกการเข้าเรียนของนักศึกษา
+- ช่วยติดต่อประสานงานระหว่างอาจารย์ผู้สอนและนักศึกษา เพื่อให้การสื่อสารเป็นไปอย่างมีประสิทธิภาพ
+- ช่วยดูแลและบำรุงรักษาอุปกรณ์การเรียนการสอน ให้พร้อมใช้งานอยู่เสมอ
+
+งานพัฒนาการเรียนการสอน
+- เข้าร่วมประชุมเตรียมการสอนกับอาจารย์ผู้สอน เพื่อวางแผนและประสานงานร่วมกัน
+- ช่วยพัฒนาสื่อการสอนและเอกสารประกอบการเรียนตามความเหมาะสม
+- รายงานปัญหาและอุปสรรคในการเรียน การสอนต่ออาจารย์ผู้สอน เพื่อหาแนวทางแก้ไขร่วมกัน</div>
+      <button class="copybtn" onclick="copyBlock(this)">คัดลอก</button>
+    </div>
+  </div>
+
+  <!-- ===== เงื่อนไขการจ้าง (ข้อย่อยของขอบเขตงาน) ===== -->
+  <div class="field">
+    <div class="label">2. เงื่อนไขการจ้าง <span class="badge b-copy">คัดลอก</span></div>
+    <div class="copybox"><div class="copytext">เงื่อนไขการจ้าง</div><button class="copybtn" onclick="copyBlock(this)">คัดลอก</button></div>
+  </div>
+  <div class="field">
+    <div class="copybox"><div class="copytext">กรณีที่ผู้รับจ้างปฏิบัติงานไม่ครบตามจำนวนชั่วโมงรวมที่กำหนดในภาคการศึกษานั้น ผู้ว่าจ้างมีสิทธิ์ชำระค่าตอบแทนตามชั่วโมงที่ปฏิบัติงานจริง โดยอ้างอิงข้อมูลจากระบบสำนักทะเบียนและประมวลผล มหาวิทยาลัยเชียงใหม่ หรือตารางการปฏิบัติงานของรายวิชาที่จัดการเรียนการสอนในรูปแบบโมดูล และคำนวณค่าตอบแทนตามแนวทางที่กำหนดในบันทึกข้อความ ที่ อว ๘๓๘๓(๒๒).๒/๑๐๘.๑ ลงวันที่ ๖ มิถุนายน ๒๕๖๘ เรื่อง แนวทางการเบิกจ่ายค่าตอบแทนสำหรับอาจารย์พิเศษและผู้ช่วยสอน (Teaching Assistant: TA) ประกอบกับมติที่ประชุมสำนักวิชาการ วิทยาลัยศิลปะ สื่อและเทคโนโลยี วันที่ ๒๑ มีนาคม ๒๕๖๘</div><button class="copybtn" onclick="copyBlock(this)">คัดลอก</button></div>
+  </div>
+
+  <!-- ===== ราคากลาง ===== -->
+  <div class="sectionhead">ราคากลาง</div>
+  <div class="field">
+    <div class="label">ราคากลาง <span class="badge b-sel">เลือกในระบบ</span></div>
+    <div class="selval">ราคาอื่นใดตามหลักเกณฑ์ วิธีการ หรือแนวทางปฏิบัติของหน่วยงานของรัฐนั้น ๆ</div>
+  </div>
+  <div class="field">
+    <div class="label">ระบุแหล่งอ้างอิง <span class="badge b-copy">คัดลอก</span></div>
+    <div class="copybox"><div class="copytext">บันทึกข้อความ ที่ อว ๘๓๘๓(๒๒).๒/๑๐๘.๑ ลงวันที่ ๖ มิถุนายน ๒๕๖๘ เรื่อง แนวทางการเบิกจ่ายค่าตอบแทนสำหรับอาจารย์พิเศษและผู้ช่วยสอน (Teaching Assistant : TA) และ มติที่ประชุม สำนักวิชาการวิทยาลัยศิลปะ สื่อและเทคโนโลยี วันที่ ๒๑ มีนาคม ๒๕๖๘</div><button class="copybtn" onclick="copyBlock(this)">คัดลอก</button></div>
+  </div>
+
+  <!-- ===== งวดงาน ===== -->
+  <div class="sectionhead">งวดงานและเงื่อนไขการชำระเงิน</div>
+  <div class="field">
+    <div class="label">งวดงาน <span class="badge b-sel">เลือกในระบบ</span></div>
+    <div class="selval">ส่งมอบครั้งเดียว</div>
+  </div>
+  <div class="field">
+    <div class="label">กำหนดส่งมอบพร้อมติดตั้ง — ไม่เกิน ... วัน นับจากวันลงนามในสัญญา <span class="badge b-copy">คัดลอก</span></div>
+    <div class="copybox"><div class="copytext">135</div><button class="copybtn" onclick="copyBlock(this)">คัดลอก</button></div>
+  </div>
+  <div class="field">
+    <div class="label">เอกสารประกอบการส่งมอบงาน <span class="badge b-copy">คัดลอก</span></div>
+    <div class="copybox"><div class="copytext">แบบฟอร์มบันทึกการปฏิบัติงานรายวัน ประกอบด้วย วัน / เวลา ที่ปฏิบัติงาน รายวิชาที่ช่วยสอน จำนวนชั่วโมงที่ช่วยสอน ลายเซ็นผู้ช่วยสอนและอาจารย์ผู้ควบคุม</div><button class="copybtn" onclick="copyBlock(this)">คัดลอก</button></div>
+  </div>
+
+  <!-- ===== ผู้กำหนด ===== -->
+  <div class="sectionhead">ผู้กำหนดรายละเอียดพัสดุ</div>
+  <div class="field">
+    <div class="label">ผู้กำหนดรายละเอียดพัสดุ <span class="badge b-sel">เลือกในระบบ</span></div>
+    <div class="selval">ผู้ช่วยศาสตราจารย์ ดร.รัศมิ์ลภัส สุตีคา</div>
+  </div>
+
+</div>
+
+<script>
+function copyBlock(btn){
+  const box = btn.closest('.copybox');
+  const el = box.querySelector('.copytext');
+  // build text: text nodes as-is, inputs use their value
+  let text = '';
+  (function walk(node){
+    node.childNodes.forEach(n=>{
+      if(n.nodeType === Node.TEXT_NODE){ text += n.nodeValue; }
+      else if(n.nodeName === 'INPUT'){ text += (n.value || n.placeholder || ''); }
+      else if(n.nodeType === Node.ELEMENT_NODE){ walk(n); }
+    });
+  })(el);
+  navigator.clipboard.writeText(text).then(()=>{
+    const old = btn.textContent;
+    btn.textContent = '✓ คัดลอกแล้ว';
+    btn.classList.add('done');
+    setTimeout(()=>{ btn.textContent = old; btn.classList.remove('done'); }, 1500);
+  }).catch(()=>{
+    // fallback
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    btn.textContent = '✓ คัดลอกแล้ว'; btn.classList.add('done');
+    setTimeout(()=>{ btn.textContent='คัดลอก'; btn.classList.remove('done'); }, 1500);
+  });
+}
+</script>
+</body>
+</html>

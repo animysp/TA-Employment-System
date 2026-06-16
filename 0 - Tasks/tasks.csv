@@ -10,3 +10,8 @@ id,title,category,status,type,due_date,time,location,description
 9,ทำ Flow การทำงานโดยมีข้อมูลวันที่ตามปฏิทินการศึกษา กิจกรรม ระยะเวลา และเอกสารที่เกี่ยวข้อง,System Maintenance,todo,meeting,2026-05-28,10:00 AM,Room 315,"Create a workflow diagram with academic calendar dates activities duration and related documents (document numbers or links)."
 10,ทำระบบประเมิน รับ Feedback จากอาจารย์,System Maintenance,todo,task,,,,"Build an anonymous TA evaluation system for instructors. Measures knowledge level communication and problem-solving of TAs. Instructor names hidden; visible only to faculty. Includes a consent form."
 11,ปรับเอกสารเบิกเป็นแนวนอน,System Maintenance,todo,task,,,,"Reformat the expense reimbursement document to landscape (horizontal) orientation."
+12,เสนอเซ็นประกาศรายชื่อ TA บัณฑิต,Employment Process,todo,task,2026-06-17,,,"เสนอเซ็นประกาศรายชื่อทุน TA บัณฑิต ภาคการศึกษา 69-1 รอรหัสนักศึกษาของ เตชณัฐ ไฟล์: ประกาศรายชื่อทุน TA บัณฑิต_with ใบเสนองาน - 69 - 1.docx"
+13,สอบถามการเงินเรื่องสถานะเอกสารกลุ่มที่ส่งวันที่ 15 พ.ค. 2569,Employment Process,todo,task,2026-06-16,,,"ติดตามสถานะเอกสารกลุ่มที่ส่งให้ฝ่ายการเงินเมื่อวันที่ 15 พฤษภาคม 2569"
+14,ส่งใบเสนอราคาให้พัสดุ,Employment Process,todo,task,2026-06-16,,,"ส่งเอกสารใบเสนอราคาให้ฝ่ายพัสดุ อย่าลืมแปะอากรแสตมป์ก่อนส่ง"
+15,ส่งเบิก บัณฑิต รอบ Summer-68,Employment Process,todo,task,2026-06-16,,,"ส่งเอกสารเบิกเงิน TA บัณฑิต รอบ Summer ภาคการศึกษา 68"
+16,รวมเอกสารหน้าบัญชีกลุ่มนักศึกษาบัณฑิต รอบ 68/2 ส่งการเงิน,Employment Process,todo,task,2026-06-15,,,"รวมเอกสารหน้าบัญชีกลุ่มนักศึกษาบัณฑิต รอบ 68/2 ส่งให้ฝ่ายการเงิน (พี่แอ้)"
