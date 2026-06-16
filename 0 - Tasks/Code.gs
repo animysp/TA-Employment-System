@@ -250,7 +250,8 @@ function syncEvent(task, eventId) {
 
   var dateObj = parseDateOnly(due);
   var timed = applyTime(dateObj, task.time);
-  var title = task.title ? String(task.title) : '(TA Task)';
+  var rawTitle = task.title ? String(task.title) : '(TA Task)';
+  var title = '[TA] ' + rawTitle;
   var desc = task.description ? String(task.description) : '';
   var loc = task.location ? String(task.location) : '';
 

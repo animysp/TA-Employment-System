@@ -15,11 +15,14 @@
     .card { background: #fff; border: 0.5px solid #D3D1C7; border-radius: 16px; padding: 28px 24px; text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: box-shadow 0.18s, transform 0.18s; }
     .card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.09); transform: translateY(-2px); }
     .card-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 18px; }
-    .icon-board { background: #EEEDFE; }
-    .icon-cal { background: #E1F5EE; }
+    .icon-board { background: #FBE6D2; }
+    .icon-cal { background: #D2F1EC; }
     .card-title { font-size: 17px; font-weight: 600; line-height: 1.4; }
     .card-desc { font-size: 13px; color: #5F5E5A; margin-top: 8px; line-height: 1.55; flex-grow: 1; }
-    .card-cta { font-size: 13px; font-weight: 500; color: #185FA5; margin-top: 18px; }
+    .card { border-top: 3px solid transparent; }
+    a.card:nth-child(1) { border-top-color: #F2994A; }
+    a.card:nth-child(2) { border-top-color: #16B8A6; }
+    .card-cta { font-size: 13px; font-weight: 500; color: #705BE6; margin-top: 18px; }
     .footer { text-align: center; font-size: 12px; color: #B4B2A9; margin-top: 3rem; }
     @media (max-width: 600px) { .cards { grid-template-columns: 1fr; } .header h1 { font-size: 21px; } }
   </style>

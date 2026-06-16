@@ -16,32 +16,45 @@
     .stat { background: #fff; border: 0.5px solid #D3D1C7; border-radius: 10px; padding: 14px 16px; }
     .stat-label { font-size: 12px; color: #888780; margin-bottom: 4px; }
     .stat-number { font-size: 24px; font-weight: 600; color: #1a1a18; }
-    .stat.highlight .stat-number { color: #185FA5; }
-    .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
-    .filter-btn { font-size: 12px; font-weight: 500; padding: 5px 14px; border-radius: 20px; border: 0.5px solid #D3D1C7; background: #fff; color: #5F5E5A; cursor: pointer; transition: all 0.15s; }
+    .stat.highlight .stat-number { color: #705BE6; }
+    /* ===== Palette (จากภาพ infographic): ส้ม / เขียวมรกต / ม่วง ===== */
+    .filters { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 1.5rem; }
+    .filter-group { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .filter-divider { width: 1px; align-self: stretch; min-height: 24px; background: #D3D1C7; margin: 0 2px; }
+    .filter-btn { display: inline-flex; align-items: center; font-size: 12px; font-weight: 500; padding: 5px 14px; border-radius: 20px; border: 0.5px solid #D3D1C7; background: #fff; color: #5F5E5A; cursor: pointer; transition: all 0.15s; }
     .filter-btn:hover { background: #F1EFE8; }
     .filter-btn.active { background: #1a1a18; color: #fff; border-color: #1a1a18; }
+    .count-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; margin-left: 7px; border-radius: 9px; font-size: 10px; font-weight: 700; background: #E5E3DB; color: #5F5E5A; }
+    /* สีประจำหมวดบนปุ่มฟิลเตอร์ */
+    .cat-filter.emp .count-badge   { background: #FBE6D2; color: #C2671B; }
+    .cat-filter.maint .count-badge { background: #E7E3FB; color: #4B3BC9; }
+    .cat-filter.meet .count-badge  { background: #D2F1EC; color: #0E7C70; }
+    .cat-filter.emp.active   { background: #F2994A; border-color: #F2994A; color: #fff; }
+    .cat-filter.maint.active { background: #705BE6; border-color: #705BE6; color: #fff; }
+    .cat-filter.meet.active  { background: #16B8A6; border-color: #16B8A6; color: #fff; }
+    .filter-btn.active .count-badge { background: rgba(255,255,255,0.28); color: #fff; }
     .category-section { margin-bottom: 2rem; }
     .category-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
     .category-pill { font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.07em; }
-    .cat-employment { background: #EEEDFE; color: #3C3489; }
-    .cat-maintenance { background: #FAEEDA; color: #633806; }
+    .cat-employment { background: #FBE6D2; color: #C2671B; }
+    .cat-maintenance { background: #E7E3FB; color: #4B3BC9; }
+    .cat-meeting { background: #D2F1EC; color: #0E7C70; }
     .category-count { font-size: 12px; color: #B4B2A9; }
     .status-group-label { font-size: 11px; color: #B4B2A9; text-transform: uppercase; letter-spacing: 0.07em; margin: 14px 0 8px; }
     .task-card { background: #fff; border: 0.5px solid #D3D1C7; border-radius: 12px; padding: 14px 16px; margin-bottom: 8px; transition: box-shadow 0.15s; }
     .task-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
     .task-card.is-done { opacity: 0.55; }
-    .task-card.is-meeting { border-left: 3px solid #1D9E75; border-radius: 0 12px 12px 0; }
+    .task-card.is-meeting { border-left: 3px solid #16B8A6; border-radius: 0 12px 12px 0; }
     .task-num { font-size: 11px; color: #B4B2A9; margin-bottom: 3px; }
     .task-title { font-size: 14px; font-weight: 600; color: #1a1a18; line-height: 1.4; }
     .task-title.done-title { text-decoration: line-through; color: #888780; }
     .task-desc { font-size: 13px; color: #5F5E5A; margin-top: 6px; line-height: 1.55; }
     .task-meta { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
     .badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 6px; }
-    .badge-todo { background: #E6F1FB; color: #185FA5; }
-    .badge-done { background: #EAF3DE; color: #3B6D11; }
-    .badge-meeting { background: #E1F5EE; color: #0F6E56; }
-    .due-badge { font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 6px; background: #EEEDFE; color: #3C3489; }
+    .badge-todo { background: #FBE6D2; color: #C2671B; }
+    .badge-done { background: #D2F1EC; color: #0E7C70; }
+    .badge-meeting { background: #ECDDFB; color: #6B30A8; }
+    .due-badge { font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 6px; background: #E7E3FB; color: #4B3BC9; }
     .location-badge { font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 6px; background: #F1EFE8; color: #5F5E5A; }
     .no-due { font-size: 11px; color: #B4B2A9; }
     .section-divider { border: none; border-top: 0.5px solid #D3D1C7; margin: 1.5rem 0; }
@@ -50,31 +63,31 @@
     .task-card { position: relative; }
     .task-title { padding-right: 66px; }
     .task-check { position: absolute; top: 14px; right: 16px; width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid #C9C7BD; background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: all 0.15s; }
-    .task-check:hover { border-color: #185FA5; }
-    .task-check.checked { background: #3B6D11; border-color: #3B6D11; }
+    .task-check:hover { border-color: #705BE6; }
+    .task-check.checked { background: #16B8A6; border-color: #16B8A6; }
     .task-check svg { width: 13px; height: 13px; stroke: #fff; }
     .task-edit { position: absolute; top: 14px; right: 46px; width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid #C9C7BD; background: #fff; color: #5F5E5A; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; line-height: 1; transition: all 0.15s; }
-    .task-edit:hover { border-color: #185FA5; background: #F1EFE8; color: #185FA5; }
+    .task-edit:hover { border-color: #705BE6; background: #EEEBFB; color: #705BE6; }
     .task-edit svg { width: 13px; height: 13px; stroke: currentColor; }
     .board-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 1.25rem; }
     .action-btn { font-size: 12px; font-weight: 500; padding: 6px 14px; border-radius: 8px; border: 0.5px solid #D3D1C7; background: #fff; color: #5F5E5A; cursor: pointer; transition: all 0.15s; }
     .action-btn:hover { background: #F1EFE8; }
-    .action-btn.primary { background: #185FA5; color: #fff; border-color: #185FA5; }
-    .action-btn.primary:hover { background: #134f88; }
-    .action-btn.danger { color: #B3261E; border-color: #E3C4C0; }
-    .action-btn.danger:hover { background: #FBEDEA; }
-    .add-btn { background: #EEEDFE; color: #3C3489; border-color: #DAD7F7; }
-    .add-btn:hover { background: #E4E1FB; }
+    .action-btn.primary { background: #705BE6; color: #fff; border-color: #705BE6; }
+    .action-btn.primary:hover { background: #5B47C9; }
+    .action-btn.danger { color: #EB5757; border-color: #F3C9C9; }
+    .action-btn.danger:hover { background: #FCEDED; }
+    .add-btn { background: #705BE6; color: #fff; border-color: #705BE6; }
+    .add-btn:hover { background: #5B47C9; }
     .save-note { font-size: 12px; color: #B4B2A9; }
     .save-note.dirty { color: #633806; }
-    #reset-btn { margin-left: auto; }
+    .export-btn { margin-left: auto; }
     .modal-overlay { position: fixed; inset: 0; background: rgba(26,26,24,0.45); display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 100; }
     .modal { background: #fff; border-radius: 16px; padding: 22px 24px; width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; }
     .modal h3 { font-size: 17px; font-weight: 600; margin-bottom: 16px; }
     .modal label { display: block; font-size: 12px; color: #5F5E5A; font-weight: 500; margin-bottom: 12px; }
     .modal input, .modal select, .modal textarea { width: 100%; margin-top: 4px; padding: 8px 10px; font-size: 13px; font-family: inherit; border: 0.5px solid #D3D1C7; border-radius: 8px; background: #fff; color: #1a1a18; }
     .modal textarea { min-height: 70px; resize: vertical; }
-    .modal input:focus, .modal select:focus, .modal textarea:focus { outline: none; border-color: #185FA5; }
+    .modal input:focus, .modal select:focus, .modal textarea:focus { outline: none; border-color: #705BE6; }
     .modal-row { display: flex; gap: 10px; }
     .modal-row label { flex: 1; }
     .modal-actions { display: flex; gap: 8px; align-items: center; margin-top: 18px; }
@@ -84,7 +97,7 @@
 <body>
 <div class="container">
 
-  <p style="margin-bottom:1rem;"><a href="../index.html" style="font-size:13px;color:#185FA5;text-decoration:none;">← หน้าหลัก / Home</a></p>
+  <p style="margin-bottom:1rem;"><a href="../index.html" style="font-size:13px;color:#705BE6;text-decoration:none;">← หน้าหลัก / Home</a></p>
 
   <div class="header">
     <h1>TA Admin Task Board</h1>
@@ -100,19 +113,24 @@
   </div>
 
   <div class="filters">
-    <button class="filter-btn active" onclick="filterTasks('all', this)">All</button>
-    <button class="filter-btn" onclick="filterTasks('todo', this)">To Do</button>
-    <button class="filter-btn" onclick="filterTasks('done', this)">Done</button>
-    <button class="filter-btn" onclick="filterTasks('Employment Process', this)">Employment Process</button>
-    <button class="filter-btn" onclick="filterTasks('System Maintenance', this)">System Maintenance</button>
-    <button class="filter-btn" onclick="filterTasks('due', this)">Has Deadline</button>
-    <button class="filter-btn" onclick="filterTasks('meeting', this)">Meeting</button>
+    <div class="filter-group">
+      <button class="filter-btn active" onclick="filterTasks('all', this)">All</button>
+      <button class="filter-btn cat-filter emp" onclick="filterTasks('Employment Process', this)">Employment Process<span class="count-badge" id="fc-emp">0</span></button>
+      <button class="filter-btn cat-filter maint" onclick="filterTasks('System Maintenance', this)">System Maintenance<span class="count-badge" id="fc-maint">0</span></button>
+      <button class="filter-btn cat-filter meet" onclick="filterTasks('Meeting', this)">Meeting<span class="count-badge" id="fc-meet">0</span></button>
+    </div>
+    <span class="filter-divider"></span>
+    <div class="filter-group">
+      <button class="filter-btn" onclick="filterTasks('todo', this)">To Do</button>
+      <button class="filter-btn" onclick="filterTasks('done', this)">Done</button>
+      <button class="filter-btn" onclick="filterTasks('due', this)">Has Deadline</button>
+    </div>
   </div>
 
   <div class="board-actions">
-    <button class="action-btn add-btn" onclick="openAdd()">＋ เพิ่มงาน</button>
-    <span class="save-note" id="save-note"></span>
+    <button class="action-btn add-btn" onclick="openAdd()">＋ Add a Task</button>
     <button class="action-btn" id="reset-btn" onclick="resetChanges()">↺ ล้างการเปลี่ยนแปลง</button>
+    <span class="save-note" id="save-note"></span>
     <button class="action-btn export-btn" onclick="exportTasksJs()">💾 บันทึกไฟล์ offline</button>
   </div>
 
@@ -130,34 +148,27 @@
           <select id="f-category">
             <option value="Employment Process">Employment Process</option>
             <option value="System Maintenance">System Maintenance</option>
+            <option value="Meeting">Meeting</option>
           </select>
         </label>
-        <label>ประเภท
-          <select id="f-type">
-            <option value="task">Task</option>
-            <option value="meeting">Meeting</option>
-          </select>
-        </label>
-      </div>
-      <div class="modal-row">
         <label>สถานะ
           <select id="f-status">
             <option value="todo">To Do</option>
             <option value="done">Done</option>
           </select>
         </label>
+      </div>
+      <div class="modal-row">
         <label>กำหนดส่ง / วันที่
           <input type="date" id="f-due">
         </label>
-      </div>
-      <div class="modal-row">
         <label>เวลา (ถ้ามี)
-          <input id="f-time" placeholder="เช่น 10:00 AM">
-        </label>
-        <label>สถานที่ (ถ้ามี)
-          <input id="f-location" placeholder="เช่น ห้อง 315">
+          <input type="time" id="f-time">
         </label>
       </div>
+      <label>สถานที่ (ถ้ามี)
+        <input id="f-location" placeholder="เช่น ห้อง 315">
+      </label>
       <label>รายละเอียด
         <textarea id="f-desc" placeholder="รายละเอียดงาน"></textarea>
       </label>
@@ -188,14 +199,15 @@
   function renderBoard(tasks) {
     const board = document.getElementById('task-board');
     board.innerHTML = '';
-    const catOrder = ['Employment Process', 'System Maintenance'];
+    const catOrder = ['Employment Process', 'System Maintenance', 'Meeting'];
     const allCats = [...new Set(tasks.map(t => t.category))];
     const ordered = catOrder.filter(c => allCats.includes(c)).concat(allCats.filter(c => !catOrder.includes(c)));
+    const pillClassMap = { 'Employment Process': 'cat-employment', 'System Maintenance': 'cat-maintenance', 'Meeting': 'cat-meeting' };
 
     ordered.forEach((cat, idx) => {
       const catTasks = tasks.filter(t => t.category === cat);
       const catId = 'cat-' + slugify(cat);
-      const pillClass = cat === 'Employment Process' ? 'cat-employment' : 'cat-maintenance';
+      const pillClass = pillClassMap[cat] || 'cat-employment';
       const section = document.createElement('div');
       section.className = 'category-section';
       section.id = catId;
@@ -210,7 +222,7 @@
         section.appendChild(label);
 
         grouped.forEach(task => {
-          const isMeeting = task.type === 'meeting';
+          const isMeeting = task.category === 'Meeting' || task.type === 'meeting';
           const isDone = task.status === 'done';
           const card = document.createElement('div');
           card.className = `task-card${isDone ? ' is-done' : ''}${isMeeting ? ' is-meeting' : ''}`;
@@ -220,9 +232,9 @@
           card.dataset.type = task.type || 'task';
 
           const statusBadge = isDone ? `<span class="badge badge-done">Done</span>` : `<span class="badge badge-todo">To Do</span>`;
-          const meetingBadge = isMeeting ? `<span class="badge badge-meeting">Meeting</span>` : '';
+          const meetingBadge = '';
           const duePart = task.due_date
-            ? `<span class="due-badge">${isMeeting && task.time ? formatDate(task.due_date) + ' · ' + task.time : 'Due ' + formatDate(task.due_date)}</span>`
+            ? `<span class="due-badge">${task.time ? formatDate(task.due_date) + ' · ' + task.time : 'Due ' + formatDate(task.due_date)}</span>`
             : `<span class="no-due">No due date</span>`;
           const locationPart = task.location ? `<span class="location-badge">${task.location}</span>` : '';
 
@@ -250,6 +262,10 @@
     document.getElementById('count-todo').textContent = tasks.filter(t => t.status === 'todo').length;
     document.getElementById('count-done').textContent = tasks.filter(t => t.status === 'done').length;
     document.getElementById('count-due').textContent = tasks.filter(t => t.due_date).length;
+
+    document.getElementById('fc-emp').textContent = tasks.filter(t => t.category === 'Employment Process').length;
+    document.getElementById('fc-maint').textContent = tasks.filter(t => t.category === 'System Maintenance').length;
+    document.getElementById('fc-meet').textContent = tasks.filter(t => t.category === 'Meeting').length;
   }
 
   function filterTasks(type, btn) {
@@ -284,7 +300,7 @@
   //  CONFIG — วาง URL ของ Google Apps Script Web App ตรงนี้
   //  (ดูวิธีในไฟล์ SETUP-Google-Sheets.md) ถ้าเว้นว่าง = โหมดออฟไลน์
   //  ใช้ข้อมูลจาก tasks.js + บันทึกในเบราว์เซอร์
-  const API_URL = 'https://script.google.com/macros/s/AKfycbxO5iVtCKbh006nys3yEWP_bO_gH_24qW_vPaaXMfejVwZw2fGDQv2SV4NsnAtqnO2EXA/exec';
+  const API_URL = 'https://script.google.com/macros/s/AKfycbz3aUw6DLZwCr6zZ9Anh4CQSr5U-rYO-o8ocjNWfrPVWYX7KPl89CjtEHD_7TdiGghjlQ/exec';
   const AUTO_REFRESH_MS = 15000;   // ดึงการเปลี่ยนแปลงของคนอื่นทุก 15 วินาที
   // ============================================================
 
@@ -295,18 +311,35 @@
   let writing = false;
   let editingId = null;
 
+  const CATEGORIES = ['Employment Process', 'System Maintenance', 'Meeting'];
+
   function normalizeOne(t) {
+    let category = String(t.category || 'Employment Process');
+    const legacyType = String(t.type || 'task');
+    // รวม category + type: ของเดิมที่ type=meeting ให้ถือเป็นหมวด Meeting
+    if (legacyType === 'meeting') category = 'Meeting';
+    if (CATEGORIES.indexOf(category) < 0) category = 'Employment Process';
     return {
       id: Number(t.id),
       title: String(t.title || ''),
-      category: String(t.category || 'Employment Process'),
+      category: category,
       status: (String(t.status).toLowerCase() === 'done') ? 'done' : 'todo',
-      type: String(t.type || 'task'),
+      type: category === 'Meeting' ? 'meeting' : 'task',   // type ผูกกับ category อัตโนมัติ
       due_date: t.due_date ? String(t.due_date) : '',
       time: t.time ? String(t.time) : '',
       location: t.location ? String(t.location) : '',
       description: String(t.description || '')
     };
+  }
+
+  // แปลงเวลาเป็น HH:MM (24 ชม.) สำหรับช่อง <input type="time">
+  function to24h(timeStr) {
+    if (!timeStr) return '';
+    const m = String(timeStr).trim().match(/^(\d{1,2})[:.](\d{2})\s*(AM|PM|am|pm)?$/);
+    if (!m) return '';
+    let hh = Number(m[1]); const mm = m[2]; const ap = m[3];
+    if (ap) { const u = ap.toUpperCase(); if (u === 'PM' && hh < 12) hh += 12; if (u === 'AM' && hh === 12) hh = 0; }
+    return (hh < 10 ? '0' + hh : '' + hh) + ':' + mm;
   }
   function normalize(arr) { return arr.map(normalizeOne).sort((a, b) => a.id - b.id); }
 
@@ -416,7 +449,6 @@
     document.getElementById('f-id').value = '';
     document.getElementById('f-title').value = '';
     document.getElementById('f-category').value = 'Employment Process';
-    document.getElementById('f-type').value = 'task';
     document.getElementById('f-status').value = 'todo';
     document.getElementById('f-due').value = '';
     document.getElementById('f-time').value = '';
@@ -434,10 +466,9 @@
     document.getElementById('f-id').value = id;
     document.getElementById('f-title').value = t.title;
     document.getElementById('f-category').value = t.category || 'Employment Process';
-    document.getElementById('f-type').value = t.type || 'task';
     document.getElementById('f-status').value = t.status;
     document.getElementById('f-due').value = t.due_date || '';
-    document.getElementById('f-time').value = t.time || '';
+    document.getElementById('f-time').value = to24h(t.time);
     document.getElementById('f-location').value = t.location || '';
     document.getElementById('f-desc').value = t.description || '';
     document.getElementById('btn-delete').style.display = 'inline-block';
@@ -447,10 +478,11 @@
   function closeModal() { document.getElementById('modal').style.display = 'none'; }
 
   function readForm() {
+    const category = document.getElementById('f-category').value;
     return {
       title: document.getElementById('f-title').value.trim(),
-      category: document.getElementById('f-category').value,
-      type: document.getElementById('f-type').value,
+      category: category,
+      type: category === 'Meeting' ? 'meeting' : 'task',
       status: document.getElementById('f-status').value,
       due_date: document.getElementById('f-due').value,
       time: document.getElementById('f-time').value.trim(),
