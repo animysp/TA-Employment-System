@@ -9,6 +9,7 @@
     --sel:#f59e0b; --sel-bg:#fff7ed; --sel-bd:#fed7aa;
     --copy:#2563eb; --copy-bg:#eff6ff; --copy-bd:#bfdbfe;
     --edit:#16a34a; --edit-bg:#f0fdf4; --edit-bd:#bbf7d0;
+    --auto:#705be6; --auto-bg:#f4f2fd; --auto-bd:#d9d2f7;
     --ink:#1f2937; --muted:#6b7280; --line:#e5e7eb;
   }
   *{box-sizing:border-box}
@@ -69,6 +70,14 @@
   .editinput:focus{outline:none; border-color:var(--edit)}
   .note{font-size:12px; color:var(--muted); margin-top:6px}
   .hint{font-size:12px; color:var(--muted); font-style:italic}
+  .d-auto{background:var(--auto)}
+  /* ส่วน "มีในระบบแล้ว": เปลี่ยนเฉพาะสีฟ้า (คัดลอก) เป็นม่วง + เส้นกั้นบน-ล่าง (ไม่มีกรอบครอบ) */
+  .from-system{border-top:2px dashed var(--auto-bd); border-bottom:2px dashed var(--auto-bd); padding:8px 0 16px; margin:24px 0}
+  .from-system .sectionhead{color:var(--auto)}
+  .from-system .copybox{background:var(--auto-bg); border-color:var(--auto-bd)}
+  .from-system .copybtn{background:var(--auto)}
+  .from-system .b-copy{color:var(--auto); background:var(--auto-bg); border-color:var(--auto-bd)}
+  .auto-note{font-size:13px; color:var(--auto); font-weight:600; margin:12px 0 2px; display:flex; align-items:center; gap:6px}
 </style>
 </head>
 <body>
@@ -80,6 +89,7 @@
     <div><span class="dot d-sel"></span> <b>เลือกในระบบ</b> — กดเลือกตัวเลือก (&lt;&lt; &gt;&gt;)</div>
     <div><span class="dot d-copy"></span> <b>คัดลอก</b> — กดปุ่มคัดลอกไปวาง ([[ ]])</div>
     <div><span class="dot d-edit"></span> <b>พิมพ์แก้ไข</b> — กรอก/แก้ก่อนคัดลอก ([ ])</div>
+    <div><span class="dot d-auto"></span> <b>มีในระบบแล้ว</b> — ระบบกรอก TOR มีให้อยู่แล้ว ใช้เฉพาะกรณีกรอกใหม่เอง</div>
   </div>
 
   <!-- ===== ข้อมูลหลัก ===== -->
@@ -115,12 +125,15 @@
     <input class="editinput" type="text" placeholder="จำนวนเงิน">
   </div>
 
+  <!-- ===== ส่วนที่มีในระบบกรอก TOR แล้ว (ใช้เฉพาะกรณีกรอกใหม่เอง) ===== -->
+  <div class="from-system">
+  <div class="auto-note">🟣 ส่วนนี้เป็นข้อมูลที่จะมากับการคัดลอกไฟล์เดิม — ใช้เฉพาะกรณีต้องกรอกใหม่เอง</div>
   <!-- ===== หลักการและเหตุผล ===== -->
   <div class="sectionhead">หลักการและเหตุผล / ความเป็นมา</div>
   <div class="field">
     <div class="label"><span class="badge b-copy">คัดลอก</span> <span class="hint">แก้ช่องสีเขียวก่อนคัดลอก</span></div>
     <div class="copybox">
-      <div class="copytext">เนื่องจากในภาคการศึกษาที่ <input class="inl" style="min-width:40px" value="1"> ปีการศึกษา <input class="inl" style="min-width:70px" value="2569"> วิทยาลัยศิลปะ สื่อและเทคโนโลยี มหาวิทยาลัยเชียงใหม่ มีการจัดการเรียนการสอนในรายวิชาต่าง ๆ ในลักษณะชั้นเรียนปฏิบัติการคอมพิวเตอร์ ครอบคลุมด้านการใช้โปรแกรมคอมพิวเตอร์ การเขียนโปรแกรม และการออกแบบดิจิทัล รวมถึงรายวิชาที่มีกิจกรรมการเรียนรู้เชิงปฏิบัติในห้องเรียนซึ่งต้องการการดูแลนักศึกษาอย่างใกล้ชิดเป็นรายบุคคล ส่งผลให้คณาจารย์มีภาระงานสูงในการให้คำแนะนำและดูแลนักศึกษาได้อย่างทั่วถึง เพื่อรักษามาตรฐานคุณภาพการศึกษาและประสิทธิภาพในการจัดการเรียนการสอนให้อยู่ในระดับสูงสุด รวมทั้งเพื่อให้สามารถดูแลและให้คำแนะนำแก่นักศึกษาได้อย่างทั่วถึงและมีประสิทธิผล วิทยาลัยฯ จึงมีความจำเป็นต้องจัดหาบุคลากรสนับสนุนการเรียนการสอนในตำแหน่งผู้ช่วยสอนที่มีคุณวุฒิการศึกษาระดับปริญญาตรีขึ้นไป เพื่อทำหน้าที่สนับสนุนคณาจารย์ในการจัดกิจกรรมการเรียนการสอน การประเมินผลการเรียนรู้ และการพัฒนาศักยภาพของนักศึกษาให้บรรลุผลลัพธ์การเรียนรู้ตามมาตรฐานการศึกษาระดับอุดมศึกษา</div>
+      <div class="copytext">เนื่องจากในภาคการศึกษาที่ <input class="inl" style="min-width:40px" value="1"> ปีการศึกษา <input class="inl" style="min-width:70px" value="2569"> วิทยาลัยศิลปะ สื่อและเทคโนโลยี มหาวิทยาลัยเชียงใหม่ มีการจัดการเรียนการสอนในรายวิชาต่าง ๆ ในลักษณะชั้นเรียนปฏิบัติการคอมพิวเตอร์ ครอบคลุมด้านการใช้โปรแกรมคอมพิวเตอร์ การเขียนโปรแกรม และการออกแบบดิจิทัล รวมถึงรายวิชาที่มีกิจกรรมการเรียนรู้เชิงปฏิบัติในห้องเรียนซึ่งต้องการการดูแลนักศึกษาอย่างใกล้ชิดเป็นรายบุคคล ส่งผลให้คณาจารย์มีภาระงานสูงในการให้คำแนะนำและดูแลนักศึกษาได้อย่างทั่วถึง เพื่อรักษามาตรฐานคุณภาพการศึกษาและประสิทธิภาพในการจัดการเรียนการสอน รวมทั้งเพื่อให้สามารถดูแลและให้คำแนะนำแก่นักศึกษาได้อย่างทั่วถึงและมีประสิทธิผล วิทยาลัยฯ จึงมีความจำเป็นต้องจัดหาบุคลากรสนับสนุนการเรียนการสอนในตำแหน่งผู้ช่วยสอนที่มีคุณวุฒิการศึกษาระดับปริญญาตรีขึ้นไป เพื่อทำหน้าที่สนับสนุนคณาจารย์ในการจัดกิจกรรมการเรียนการสอน การประเมินผลการเรียนรู้ และการพัฒนาศักยภาพของนักศึกษาให้บรรลุผลลัพธ์การเรียนรู้ตามมาตรฐานการศึกษาระดับอุดมศึกษา</div>
       <button class="copybtn" onclick="copyBlock(this)">คัดลอก</button>
     </div>
   </div>
@@ -139,6 +152,9 @@
   <div class="field">
     <div class="copybox"><div class="copytext">เพื่อช่วยส่งเสริมให้ผู้เรียนบรรลุผลการเรียนรู้ตามที่กำหนดไว้ในรายวิชา</div><button class="copybtn" onclick="copyBlock(this)">คัดลอก</button></div>
   </div>
+
+  </div>
+  <!-- ===== end from-system ===== -->
 
   <!-- ===== คุณสมบัติ ===== -->
   <div class="sectionhead">คุณสมบัติผู้ยื่นข้อเสนอ (เพิ่มเติม) <span class="badge b-copy">คัดลอกทีละข้อ</span></div>
