@@ -109,7 +109,7 @@ The following parties are involved in the TA employment process:
 
 ## TA Types & Classifications
 
-There are seven TA types, each with a designated hourly payment rate:
+There are eight TA types, each with a designated hourly payment rate:
 
 | # | TA Type | Program | Hourly Rate (THB) |
 |---|---------|---------|:-----------------:|
@@ -117,17 +117,20 @@ There are seven TA types, each with a designated hourly payment rate:
 | 2 | Graduate Assistant | International Program | 300 |
 | 3 | Bachelor Student Assistant | Thai Program | 90 |
 | 4 | Bachelor Student Assistant | International Program | 120 |
-| 5 | Master Student Assistant | International Program | 300 |
-| 6 | Lab Head | — | 450 |
-| 7 | CAMT Staff | — | 0 (no payment) |
+| 5 | Master Student Assistant | Thai Program | 200 |
+| 6 | Master Student Assistant | International Program | 300 |
+| 7 | Lab Head | — | 450 |
+| 8 | CAMT Staff | — | 0 (no payment) |
 
 > **Note:** CAMT Staff TAs receive no monetary compensation (0 THB/hour), as their TA duties fall within their staff role.
 
-### Special Case: Master Student Assistant (International Program)
-Although listed as a distinct TA type, the **Master Student Assistant (International Program)** is handled differently from the others:
+### Special Case: Master Student Assistant (Thai & International Program)
+Although listed as distinct TA types, **Master Student Assistants** (both Thai and International Program) are handled differently from other TA types:
 
-- **In EMS:** Recorded as **Graduate Assistant (International Program)** — the system does not have a separate option for Master Student Assistants, and there is currently no plan to add one.
-- **Payment rate:** Same as Graduate Assistant (International Program) — **300 THB/hour**.
+- **In EMS:** Recorded as the corresponding **Graduate Assistant** type — Master Student Assistant (Thai Program) is recorded as Graduate Assistant (Thai Program), and Master Student Assistant (International Program) is recorded as Graduate Assistant (International Program). The system does not have a separate option for Master Student Assistants, and there is currently no plan to add one.
+- **Payment rate:** Same as the corresponding Graduate Assistant type:
+  - Thai Program — **200 THB/hour**
+  - International Program — **300 THB/hour**
 - **Appointment process:** A new university rule (effective from a recent past semester) requires Master Student Assistants to be **แต่งตั้ง (appointed) through a separate process**, unlike Graduate Assistants who follow the standard TA employment flow. See Step 4 for details.
 
 ---
@@ -276,13 +279,18 @@ Each position entry (whether pre-loaded or created by the instructor) contains t
 | โน้ต | Note | Free-text note field; instructors typically use this to suggest a specific TA candidate by name, or to state a specific requirement for the position |
 
 ### EMS TA Type Dropdown — Important Note
-The TA type dropdown in EMS does **not** include "Master Student Assistant (International Program)" as a separate option. Master Student Assistants are recorded in the system as **Graduate Assistant (International Program)**.
+The TA type dropdown in EMS does **not** include "Master Student Assistant" as a separate option for either program. Master Student Assistants are recorded in the system as the corresponding Graduate Assistant type:
+
+| Actual TA Type | Recorded in EMS as |
+|---|---|
+| Master Student Assistant (Thai Program) | Graduate Assistant (Thai Program) |
+| Master Student Assistant (International Program) | Graduate Assistant (International Program) |
 
 **Background:** Master Student Assistants were previously employed under the Graduate Assistant category. A new university rule (effective from a recent past semester) now requires Master Student Assistants to be แต่งตั้ง (appointed) through a **separate process**. However:
-- The payment rate remains the same (300 THB/hour) for both types.
+- Payment rates remain the same as the corresponding Graduate Assistant type (Thai: 200 THB/hr, International: 300 THB/hr).
 - The EMS system has not been updated to reflect this distinction, and there is currently no plan to update it.
 
-> ⚠️ When a position in EMS shows "Graduate Assistant (International Program)," it may represent either a Graduate Assistant or a Master Student Assistant in practice. The actual appointment process for Master Student Assistants follows a different path (see Step 4).
+> ⚠️ A position in EMS showing "Graduate Assistant (Thai Program)" or "Graduate Assistant (International Program)" may represent either a Graduate Assistant or a Master Student Assistant in practice. The actual appointment process for Master Student Assistants follows a different path (see Step 4).
 
 ### TA Allocation Criteria (หลักเกณฑ์การจัดสรร)
 
@@ -628,6 +636,57 @@ Payment = weeks_assisted × hours_per_week × hourly_rate
 
 **Multiple class assignments:**
 - If a TA assists more than one class, payment is calculated per class and summed.
+
+---
+
+### Timesheet Form (ใบลงเวลาทำงาน)
+
+#### ไฟล์ฟอร์ม
+
+| TA Group | File |
+|----------|------|
+| Graduate Assistant (จ้างเหมา) | `ฟอร์มใบลงเวลา - จ้างเหมา.xlsx` |
+| Master Student Assistant | `ฟอร์มใบลงเวลา - ทุนบัณฑิต.xlsx` |
+
+> ทั้งสองไฟล์มีโครงสร้างเดียวกัน ต่างกันแค่ชื่อหัวเอกสาร เอกสารแยกต่อเดือน (1 ไฟล์ต่อ 1 เดือน)
+
+**File location:** `5 - เบิกจ่าย/ฟอร์มใบลงเวลา/`
+
+---
+
+#### Field Rules (เงื่อนไขการกรอก)
+
+| Field | Rule |
+|-------|------|
+| **ประจำเดือน** | ระบุชื่อเดือนและปีพุทธศักราช เช่น `มิถุนายน 2567` |
+| **ระดับ** | ทำเครื่องหมายระดับที่ **สอน** (บัณฑิตศึกษา / ปริญญาตรี) |
+| **หลักสูตร** | ทำเครื่องหมายหลักสูตรที่ **สอน** (ภาคปกติ / ภาคพิเศษ / นานาชาติ) |
+| **ชื่อผู้สอน** | ต้องมีคำนำหน้าชื่อเสมอ ได้แก่ นาย / นาง / นางสาว |
+| **กระบวนวิชา** | ระบุ **รหัสวิชา** และ **Section** ที่สอน |
+| **ผู้รับเงิน** | TA ลงลายมือชื่อ **ทุก row** ที่มีการลงเวลา |
+| **ผู้จัดทำ/ผู้ตรวจสอบ** | อาจารย์ประจำวิชาลงนาม |
+
+---
+
+#### วันเดือนปีที่สอน — เงื่อนไขการลงเวลา
+
+TA สามารถลงเวลาได้เฉพาะ **วันที่สอนจริงในช่วงภาคการศึกษาที่ได้รับแต่งตั้ง** เท่านั้น
+
+**❌ ห้ามลงเวลาในช่วงต่อไปนี้ (กรณีปกติ):**
+- นอกภาคการศึกษา
+- วันเตรียมสอบกลางภาค (Reading Week)
+- ช่วงวันสอบกลางภาคการศึกษา
+- วันหยุดนักขัตฤกษ์
+
+**✅ ยกเว้น:** หากมีการสอนจริงในวันข้างต้น ให้ลงเวลาได้ แต่ต้องระบุในช่อง **หมายเหตุ**
+
+#### ตัวอย่างหมายเหตุที่ใช้บ่อย
+
+| หมายเหตุ | ความหมาย |
+|---------|----------|
+| `Sat. สอนตามจริง` | มีการสอนจริงในวันเสาร์ |
+| `Sun. สอนตามจริง` | มีการสอนจริงในวันอาทิตย์ |
+| `วันหยุดฯ สอนชดเชย` | สอนชดเชยในวันหยุดนักขัตฤกษ์ |
 
 ---
 
