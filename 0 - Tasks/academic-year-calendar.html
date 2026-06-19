@@ -339,7 +339,7 @@
     <summary id="semSummary">ดูปฏิทินภาคการศึกษา</summary>
     <table class="sem-table">
       <thead>
-        <tr><th>ภาค</th><th>เปิดภาค</th><th>วันสุดท้ายของการศึกษา</th></tr>
+        <tr><th>ภาค</th><th>เปิดภาค</th><th>วันสุดท้ายของการศึกษา</th><th>วันปิดภาคการศึกษา</th></tr>
       </thead>
       <tbody id="semTableBody"></tbody>
     </table>
@@ -381,18 +381,21 @@
         <div class="modal-row">
           <label>เปิดภาค<input type="date" id="cy-s1-open"></label>
           <label>วันสุดท้ายของการศึกษา<input type="date" id="cy-s1-last"></label>
+          <label>วันปิดภาคการศึกษา<input type="date" id="cy-s1-close"></label>
         </div>
       </div>
       <div class="cal-sem"><b>ภาคเรียนที่ 2</b>
         <div class="modal-row">
           <label>เปิดภาค<input type="date" id="cy-s2-open"></label>
           <label>วันสุดท้ายของการศึกษา<input type="date" id="cy-s2-last"></label>
+          <label>วันปิดภาคการศึกษา<input type="date" id="cy-s2-close"></label>
         </div>
       </div>
       <div class="cal-sem"><b>ภาคฤดูร้อน (3)</b>
         <div class="modal-row">
           <label>เปิดภาค<input type="date" id="cy-s3-open"></label>
           <label>วันสุดท้ายของการศึกษา<input type="date" id="cy-s3-last"></label>
+          <label>วันปิดภาคการศึกษา<input type="date" id="cy-s3-close"></label>
         </div>
       </div>
       <div class="cal-sem"><b>การวางแผนงบประมาณ</b>
@@ -434,9 +437,9 @@
   const YEAR_DEFAULTS = {
     2569: {
       sems: {
-        '1': { open: '2026-06-22', lastDay: '2026-10-18' },
-        '2': { open: '2026-11-16', lastDay: '2027-03-14' },
-        '3': { open: '2027-04-19', lastDay: '2027-05-30' }
+        '1': { open: '2026-06-22', lastDay: '2026-10-18', closeDay: '2026-11-03' },
+        '2': { open: '2026-11-16', lastDay: '2027-03-14', closeDay: '2027-03-29' },
+        '3': { open: '2027-04-19', lastDay: '2027-05-30', closeDay: '2027-06-07' }
       },
       budget: { date: '2026-09-09', fy: 2570 }
     }
@@ -522,6 +525,12 @@
       });
 
       acts.push({ id: `${sem}-step5-cont-term`, step: 5, sem, subgroup: 'กลุ่มจ้างเหมา', name: 'รวมเอกสารส่งให้พัสดุ (รายเทอม)', timelineText: 'ไม่เกิน 2 สัปดาห์หลังจากวันสุดท้ายของการเรียนการสอน', date: addDays(lastDay, 14), docs: [] });
+
+      // วันส่งมอบงานตามสัญญา TOR (จ้างเหมา) — อ้างอิงจาก "วันปิดภาคการศึกษา"
+      if (sd.closeDay) {
+        const closeDay = parseDate(sd.closeDay);
+        acts.push({ id: `${sem}-step5-cont-delivery`, step: 5, sem, subgroup: 'กลุ่มจ้างเหมา', name: 'วันส่งมอบงานตามสัญญา TOR (จ้างเหมา)', timelineText: 'วันปิดภาคการศึกษา', date: closeDay, docs: [] });
+      }
     });
 
     acts.sort((a, b) => { const da = a.date || new Date(8640000000000000); const db = b.date || new Date(8640000000000000); return da - db; });
@@ -632,9 +641,9 @@
     if (cfg) ['1','2','3'].forEach(n => {
       const sd = cfg.sems && cfg.sems[n];
       if (!sd) return;
-      html += `<tr><td><b>${n}/${yy}</b></td><td>${sd.open ? fmtDate(parseDate(sd.open)) : '—'}</td><td>${sd.lastDay ? fmtDate(parseDate(sd.lastDay)) : '—'}</td></tr>`;
+      html += `<tr><td><b>${n}/${yy}</b></td><td>${sd.open ? fmtDate(parseDate(sd.open)) : '—'}</td><td>${sd.lastDay ? fmtDate(parseDate(sd.lastDay)) : '—'}</td><td>${sd.closeDay ? fmtDate(parseDate(sd.closeDay)) : '—'}</td></tr>`;
     });
-    document.getElementById('semTableBody').innerHTML = html || '<tr><td colspan="3">ยังไม่มีข้อมูลปฏิทิน</td></tr>';
+    document.getElementById('semTableBody').innerHTML = html || '<tr><td colspan="4">ยังไม่มีข้อมูลปฏิทิน</td></tr>';
   }
 
   function populateYearSelect() {
@@ -779,10 +788,13 @@
     g('cy-year').value = y || '';
     g('cy-s1-open').value = (cfg.sems && cfg.sems['1'] && cfg.sems['1'].open) || '';
     g('cy-s1-last').value = (cfg.sems && cfg.sems['1'] && cfg.sems['1'].lastDay) || '';
+    g('cy-s1-close').value = (cfg.sems && cfg.sems['1'] && cfg.sems['1'].closeDay) || '';
     g('cy-s2-open').value = (cfg.sems && cfg.sems['2'] && cfg.sems['2'].open) || '';
     g('cy-s2-last').value = (cfg.sems && cfg.sems['2'] && cfg.sems['2'].lastDay) || '';
+    g('cy-s2-close').value = (cfg.sems && cfg.sems['2'] && cfg.sems['2'].closeDay) || '';
     g('cy-s3-open').value = (cfg.sems && cfg.sems['3'] && cfg.sems['3'].open) || '';
     g('cy-s3-last').value = (cfg.sems && cfg.sems['3'] && cfg.sems['3'].lastDay) || '';
+    g('cy-s3-close').value = (cfg.sems && cfg.sems['3'] && cfg.sems['3'].closeDay) || '';
     g('cy-bud-date').value = (cfg.budget && cfg.budget.date) || '';
     g('cy-bud-fy').value = (cfg.budget && cfg.budget.fy) || '';
     document.getElementById('calModal').style.display = 'flex';
@@ -794,9 +806,9 @@
     const v = id => document.getElementById(id).value;
     const config = {
       sems: {
-        '1': { open: v('cy-s1-open'), lastDay: v('cy-s1-last') },
-        '2': { open: v('cy-s2-open'), lastDay: v('cy-s2-last') },
-        '3': { open: v('cy-s3-open'), lastDay: v('cy-s3-last') }
+        '1': { open: v('cy-s1-open'), lastDay: v('cy-s1-last'), closeDay: v('cy-s1-close') },
+        '2': { open: v('cy-s2-open'), lastDay: v('cy-s2-last'), closeDay: v('cy-s2-close') },
+        '3': { open: v('cy-s3-open'), lastDay: v('cy-s3-last'), closeDay: v('cy-s3-close') }
       },
       budget: { date: v('cy-bud-date'), fy: Number(v('cy-bud-fy')) || (year + 1) }
     };

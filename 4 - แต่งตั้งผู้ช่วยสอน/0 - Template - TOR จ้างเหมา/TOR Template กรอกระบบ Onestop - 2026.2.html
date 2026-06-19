@@ -237,7 +237,13 @@
   </div>
   <div class="field">
     <div class="label">กำหนดส่งมอบพร้อมติดตั้ง — ไม่เกิน ... วัน นับจากวันลงนามในสัญญา <span class="badge b-copy">คัดลอก</span></div>
-    <div class="copybox"><div class="copytext">135</div><button class="copybtn" onclick="copyBlock(this)">คัดลอก</button></div>
+    <div style="margin:6px 0; font-size:13px; color:#5F5E5A;">
+      วันที่ทำ <input type="date" id="tor-start" class="inl">
+      &nbsp; ดึงจากปฏิทิน <select id="tor-sem" class="inl"><option value="">— เลือกปี/ภาค —</option></select>
+      &nbsp; วันปิดเทอม <input type="date" id="tor-end" class="inl">
+      <div style="font-size:12px; color:#999; margin-top:4px;">คำนวณ: (วันปิดเทอม − วันที่ทำ) − 10 วันดำเนินการส่งเอกสาร · วันปิดเทอมดึงจากหน้า Academic Year Calendar</div>
+    </div>
+    <div class="copybox"><div class="copytext" id="tor-days">135</div><button class="copybtn" onclick="copyBlock(this)">คัดลอก</button></div>
   </div>
   <div class="field">
     <div class="label">เอกสารประกอบการส่งมอบงาน <span class="badge b-copy">คัดลอก</span></div>
@@ -280,6 +286,58 @@ function copyBlock(btn){
     setTimeout(()=>{ btn.textContent='คัดลอก'; btn.classList.remove('done'); }, 1500);
   });
 }
+
+// ===== คำนวณ "กำหนดส่งมอบพร้อมติดตั้ง" =====
+// จำนวนวัน = (วันปิดเทอม − วันที่ทำ) − 10 วันดำเนินการส่งเอกสาร
+function recalcDelivery(){
+  const s = document.getElementById('tor-start').value;
+  const e = document.getElementById('tor-end').value;
+  const out = document.getElementById('tor-days');
+  if(!s || !e) return;
+  const d1 = new Date(s + 'T00:00:00');
+  const d2 = new Date(e + 'T00:00:00');
+  let days = Math.round((d2 - d1) / (1000*60*60*24)) - 10;
+  if(days < 0) days = 0;
+  out.textContent = days;
+}
+(function(){
+  const start = document.getElementById('tor-start');
+  const end = document.getElementById('tor-end');
+  // ตั้งวันที่ทำเป็นวันนี้ให้อัตโนมัติ
+  const t = new Date();
+  start.value = t.getFullYear() + '-' + String(t.getMonth()+1).padStart(2,'0') + '-' + String(t.getDate()).padStart(2,'0');
+  start.addEventListener('change', recalcDelivery);
+  end.addEventListener('change', recalcDelivery);
+})();
+
+// ===== ดึงวันปิดเทอมจาก Academic Year Calendar (backend เดียวกัน) =====
+const API_URL = 'https://script.google.com/macros/s/AKfycbxO5iVtCKbh006nys3yEWP_bO_gH_24qW_vPaaXMfejVwZw2fGDQv2SV4NsnAtqnO2EXA/exec';
+const YEAR_DEFAULTS = {
+  2569: { sems: { '1': { closeDay: '2026-11-03' }, '2': { closeDay: '2027-03-29' }, '3': { closeDay: '2027-06-07' } } }
+};
+async function loadSemesters(){
+  const sel = document.getElementById('tor-sem');
+  const calendars = {};
+  Object.keys(YEAR_DEFAULTS).forEach(y => { calendars[Number(y)] = YEAR_DEFAULTS[y]; });
+  try {
+    const res = await fetch(API_URL + '?type=tracker', { method: 'GET' });
+    const data = await res.json();
+    if (data.ok) (data.calendars || []).forEach(c => { if (c && c.year && c.config) calendars[c.year] = c.config; });
+  } catch (e) { /* ออฟไลน์ → ใช้ค่าตั้งต้น */ }
+  const M = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+  const fmt = iso => { if (!iso) return ''; const d = new Date(iso + 'T00:00:00'); return `${d.getDate()} ${M[d.getMonth()]} ${(d.getFullYear()+543)%100}`; };
+  const years = Object.keys(calendars).map(Number).sort((a, b) => a - b);
+  let html = '<option value="">— เลือกปี/ภาค —</option>';
+  years.forEach(y => { ['1','2','3'].forEach(n => {
+    const sd = calendars[y].sems && calendars[y].sems[n];
+    if (sd && sd.closeDay) html += `<option value="${sd.closeDay}">${n}/${y%100} (ปิดเทอม ${fmt(sd.closeDay)})</option>`;
+  }); });
+  sel.innerHTML = html;
+  sel.addEventListener('change', () => {
+    if (sel.value) { document.getElementById('tor-end').value = sel.value; recalcDelivery(); }
+  });
+}
+loadSemesters();
 </script>
 </body>
 </html>
